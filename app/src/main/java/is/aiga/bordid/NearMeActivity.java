@@ -18,7 +18,7 @@ public class NearMeActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_list);
+        setContentView(R.layout.listview_restaurant);
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

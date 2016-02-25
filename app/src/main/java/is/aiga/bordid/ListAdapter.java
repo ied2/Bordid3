@@ -43,7 +43,7 @@ public class ListAdapter extends BaseAdapter {
 
         if (convertView == null) {
 
-            convertView = inflater.inflate(R.layout.list_mobile, parent, false);
+            convertView = inflater.inflate(R.layout.item_restaurant, parent, false);
         }
 
         // Find views for image and text
