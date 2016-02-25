@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="is.aiga.bordid.HomeActivity"
+    tools:showIn="@layout/app_bar_home">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/chocho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/chocho"/>
+        <TextView
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="#FFFFFF"
+            android:text="Near me"
+            android:id="@+id/near_me"
+            android:layout_below="@id/chocho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/coco"/>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="30dp"
+                android:textColor="#FFFFFF"
+                android:text="Surprise me"
+                android:id="@+id/surprise"
+                android:layout_below="@id/chocho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/coco"/>
+
+        <ImageView
+            android:id="@+id/oldspice"
+            android:layout_below="@+id/coco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/oldspice"/>
+        <ImageView
+            android:id="@+id/threeamigos"
+            android:layout_below="@+id/oldspice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/threeamigos"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
