@@ -16,8 +16,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-
-public class Service {
+public class RequestHandler {
 
     public String sendPostRequest(String requestURL, HashMap<String, String> postDataParams) {
 
@@ -27,6 +26,7 @@ public class Service {
         try {
             // Connect to the server
             url = new URL(requestURL);
+            Log.d("IED", "RequestHandler: " + requestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
@@ -76,64 +76,3 @@ public class Service {
         return result.toString(); // Skilar löngum streng... image=%2F9...
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public boolean validateUser(String user){
-//        class UploadImage extends AsyncTask<String,Void,String> {
-//
-////            ProgressDialog loading;
-//            //RequestHandler rh = new RequestHandler();
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-////                loading = ProgressDialog.show(MainActivity.this, "Uploading...", null,true,true);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-//                super.onPostExecute(s);
-//                Log.d("IED", "S:" + s);
-//                Log.d("IED", "boolean: " + s.equals("true"));
-//                if(s.equals("true")) {
-//                    validate = true;
-//                }
-////                loading.dismiss();
-////                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            protected String doInBackground(String... params) {
-//                String user_pass = params[0]; //params[0] is in this case "username" and "password"
-////                String password = params[1]; //params[0] is in this case "username" and "password"
-//                HashMap<String,String> data = new HashMap<>();
-//
-//                data.put(UPLOAD_KEY, user_pass); // UPLOAD_KEY = "image", keyword fyrir php á server
-//                String result = sendPostRequest(UPLOAD_URL,data); // Sendir langan streng t.d image=%2F9... til server
-//                Log.d("IED", "Result: " + result);
-//                return result;
-//            }
-//        }
-//
-//        UploadImage ui = new UploadImage();
-//        ui.execute(user);
-//        return validate;
-//    }
