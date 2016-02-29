@@ -1,16 +1,26 @@
 package is.aiga.bordid;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class CreateAccountActivity extends AppCompatActivity{
+import java.util.HashMap;
+
+public class CreateAccountActivity extends AppCompatActivity {
+
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/CreateUser.php";
+    public static final String UPLOAD_KEY = "username";
 
     private EditText mUsernameView, mPasswordView;
+    private UserCreateTask mAuthTask = null;
+    private boolean CREATE_SUCCESSFUL;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,11 +39,75 @@ public class CreateAccountActivity extends AppCompatActivity{
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CreateAccount();
-                Toast.makeText(CreateAccountActivity.this, "Account to be created :)", Toast.LENGTH_SHORT).show();
+                CreateAccount();
+                //Toast.makeText(CreateAccountActivity.this, "Account to be created :)", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void CreateAccount() {
+
+        // Store values at the time of the login attempt.
+        String userName = mUsernameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        mAuthTask = new UserCreateTask(userName, password);
+        mAuthTask.execute((Void) null);
+    }
+
+    public class UserCreateTask extends AsyncTask<Void, Void, String> {
+
+        private final String mUserName;
+        private final String mPassword;
+
+        UserCreateTask(String email, String password) {
+            CREATE_SUCCESSFUL = false;
+            mUserName = email;
+            mPassword = password;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            Service service = new Service(); // Service class is used to validate username and password
+
+            String loginCode = mUserName + ":" + mPassword;
+            HashMap<String,String> data = new HashMap<>();
+            data.put(UPLOAD_KEY, loginCode); // UPLOAD_KEY = "username", keyword for server POST request
+
+            String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+            Log.d("IED", result);
+//            if(result.equals("true")) {
+//                CREATE_SUCCESSFUL = true;
+//                Log.d("IED", "Logged in as: " + mUserName);
+//            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(final String success) {
+            mAuthTask = null;
+            //showProgress(false);
+
+            if (success.equals("Account Created")) {
+                Toast.makeText(CreateAccountActivity.this, success, Toast.LENGTH_SHORT).show();
+            } else {
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+                Toast.makeText(CreateAccountActivity.this, success, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            //showProgress(false);
+        }
+    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

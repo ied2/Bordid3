@@ -73,6 +73,7 @@ public class Service {
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8")); // getValue = Langur strengur af bitmap
         }
+        Log.d("IED", result.toString());
         return result.toString(); // Skilar löngum streng... image=%2F9...
     }
 }

@@ -74,6 +74,14 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/button_logout"
+        android:text="@string/button_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#d12f30"
+        android:layout_gravity="center"/>
+
 
 
 </LinearLayout>

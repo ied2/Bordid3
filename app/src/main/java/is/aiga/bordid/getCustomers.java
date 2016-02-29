@@ -61,16 +61,16 @@ public class getCustomers {
     // Populating array DUMMY_CREDENTIALS in LoginActivity
     private void resultsToArray(String array) throws JSONException {
 
-        JSONObject jsnobject = new JSONObject(array);
-        JSONArray jsonArray = jsnobject.getJSONArray("result");
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            String x = "";
-            x += jsonArray.getJSONObject(i).getString("username");
-            x += ":";
-            x += jsonArray.getJSONObject(i).getString("password");
-            Log.d("IED", x);
-            LoginActivity.DUMMY_CREDENTIALS.add(x); // <------- populating this array
-        }
+//        JSONObject jsnobject = new JSONObject(array);
+//        JSONArray jsonArray = jsnobject.getJSONArray("result");
+//
+//        for (int i = 0; i < jsonArray.length(); i++) {
+//            String x = "";
+//            x += jsonArray.getJSONObject(i).getString("username");
+//            x += ":";
+//            x += jsonArray.getJSONObject(i).getString("password");
+//            Log.d("IED", x);
+//            LoginActivity.DUMMY_CREDENTIALS.add(x); // <------- populating this array
+//        }
     }
 }

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,10 +31,15 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(i);
+                // Check if user is logged in
+                if(SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
+                    Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
+                    pi.putExtra("username", SaveSharedPreference.getUserName(HomeActivity.this));
+                    startActivity(pi);
+                }else {
+                    Intent li = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(li);
+                }
             }
         });
 
@@ -63,6 +69,12 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+
+        // Check if user is logged in
+        if(SaveSharedPreference.getUserName(this).length() > 0)
+        {
+            Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

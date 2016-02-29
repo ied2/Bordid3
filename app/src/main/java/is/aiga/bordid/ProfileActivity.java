@@ -1,11 +1,16 @@
 package is.aiga.bordid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class ProfileActivity extends AppCompatActivity{
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button buttonLogout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,6 +24,21 @@ public class ProfileActivity extends AppCompatActivity{
         if (extras != null) {
             String username = extras.getString("username");
             Toast.makeText(ProfileActivity.this, "Logged in as: " + username, Toast.LENGTH_LONG).show();
+        }
+
+        buttonLogout = (Button) findViewById(R.id.button_logout);
+        buttonLogout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_logout:
+                SaveSharedPreference.clearUserName(this);
+                finish();
+                break;
+            default:
+                break;
         }
     }
 
