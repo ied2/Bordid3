@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 0;
     }
 
     /**
@@ -307,7 +307,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
         private final String mUserName;
         private final String mPassword;
@@ -319,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
 
             Service service = new Service(); // Service class is used to validate username and password
 
@@ -330,26 +330,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 
-            Log.d("IED", result);
-            if(result.equals("true")) {
-                LOGIN_SUCCESSFUL = true;
-                Log.d("IED", "Logged in as: " + mUserName);
-            }
+            Log.d("IED", "result: " + result);
 
-            return LOGIN_SUCCESSFUL;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final String s) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                SaveSharedPreference.setUserName(LoginActivity.this, mUserName);
-                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
-                i.putExtra("username", mUserName);
-                startActivity(i);
-                finish();
+            String success = s.split(":")[0];
+            if (success.equals("true")) {
+
+                Log.d("IED", "success!!!");
+                int i = Integer.parseInt(s.split(":")[1]);
+                String n = s.split(":")[2];
+                String e = s.split(":")[3];
+                String p = s.split(":")[4];
+
+                int id = i;
+                String name = n;
+                String email = e;
+                String phoneNumber = p;
+
+                SaveSharedPreference.clearUserName(LoginActivity.this);
+                SaveSharedPreference.setUserName(LoginActivity.this, mUserName, name);
+//                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+//                i.putExtra("username", mUserName);
+//                startActivity(i);
+//                finish();
+
+                Log.d("IED", "SavedPreference: " + SaveSharedPreference.getUserName(LoginActivity.this));
+                Log.d("IED", "SavedPreference: " + SaveSharedPreference.getName(LoginActivity.this));
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

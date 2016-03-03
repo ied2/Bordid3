@@ -24,7 +24,7 @@
             android:textSize="25sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ivan Elí Du Teitsson"/>
+            android:text=" "/>
 
         <TextView
             android:id="@+id/profile_email"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_name"
-            android:text="ivansc91@gmail.com"/>
+            android:text=" "/>
 
         <TextView
             android:id="@+id/profile_phoneNumber"
@@ -40,7 +40,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_email"
-            android:text="6901690"/>
+            android:text=" "/>
+
+
+        <Button
+            android:id="@+id/profile_configure"
+            android:text="Configure"
+            android:layout_below="@+id/profile_phoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
@@ -53,22 +61,23 @@
 
 
         <LinearLayout
+            android:id="@+id/restaurant_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/profile_restaurant_name"
-                android:text="Ruby Tuesday"
+                android:text=" "
                 android:textSize="30sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <ImageView
+
+            <Button
+                android:id="@+id/profile_configure_restaurant"
+                android:text="Configure"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:src="@android:drawable/ic_menu_manage"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

@@ -32,11 +32,11 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 // Check if user is logged in
-                if(SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
+                if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
                     Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
                     pi.putExtra("username", SaveSharedPreference.getUserName(HomeActivity.this));
                     startActivity(pi);
-                }else {
+                } else {
                     Intent li = new Intent(HomeActivity.this, LoginActivity.class);
                     startActivity(li);
                 }
@@ -70,6 +70,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        SaveSharedPreference.clearUserName(HomeActivity.this);
         // Check if user is logged in
         if(SaveSharedPreference.getUserName(this).length() > 0)
         {
