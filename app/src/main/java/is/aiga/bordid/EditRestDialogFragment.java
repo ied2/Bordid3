@@ -19,58 +19,73 @@ public class EditRestDialogFragment extends DialogFragment {
     public static final String UPLOAD_KEY = "user";
     private ConfigureUser task;
 
-    private static EditText name, email, phoneNumber;
+    private String result;
+
+    private static EditText name, email, address, zip, city, phoneNumber, numSeats, latitude, longitude;
     private Button save, cancel;
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_restaurant_configure, container, false);
+        rootView = inflater.inflate(R.layout.fragment_restaurant_configure, container, false);
         getDialog().setTitle("Configure");
 
         // Initialize few things
-        init(rootView);
+        init();
 
         return rootView;
     }
 
-    private void init(View s) {
-        name = (EditText) s.findViewById(R.id.dialog_name);
-        email = (EditText) s.findViewById(R.id.dialog_email);
-        phoneNumber = (EditText) s.findViewById(R.id.dialog_phonenumber);
+    private void init() {
+        name = (EditText) rootView.findViewById(R.id.dialog_restaurant_name);
+        email = (EditText) rootView.findViewById(R.id.dialog_restaurant_email);
+        address = (EditText) rootView.findViewById(R.id.dialog_restaurant_address);
+        zip = (EditText) rootView.findViewById(R.id.dialog_restaurant_zip);
+        city = (EditText) rootView.findViewById(R.id.dialog_restaurant_city);
+        phoneNumber = (EditText) rootView.findViewById(R.id.dialog_restaurant_phonenumber);
+        numSeats = (EditText) rootView.findViewById(R.id.dialog_restaurant_numSeats);
+        latitude = (EditText) rootView.findViewById(R.id.dialog_restaurant_latitude);
+        longitude = (EditText) rootView.findViewById(R.id.dialog_restaurant_longitude);
 
-        name.setText(ProfileActivity.name.getText().toString());
-        email.setText(ProfileActivity.email.getText().toString());
-        phoneNumber.setText(ProfileActivity.phoneNumber.getText().toString());
+        name.setText(SaveSharedPreference.getRestaurantName(rootView.getContext()));
+        email.setText(SaveSharedPreference.getRestaurantEmail(rootView.getContext()));
+        address.setText(SaveSharedPreference.getAddress(rootView.getContext()));
+        zip.setText(SaveSharedPreference.getZip(rootView.getContext()));
+        city.setText(SaveSharedPreference.getCity(rootView.getContext()));
+        phoneNumber.setText(SaveSharedPreference.getRestaurantPhoneNumber(rootView.getContext()));
+        numSeats.setText(SaveSharedPreference.getNumSeats(rootView.getContext()));
+        latitude.setText(SaveSharedPreference.getLatitude(rootView.getContext()));
+        longitude.setText(SaveSharedPreference.getLongitude(rootView.getContext()));
 
-        save = (Button) s.findViewById(R.id.dialogButtonOK);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String mName = name.getText().toString();
-                String mEmail = email.getText().toString();
-                String mPhoneNumber = phoneNumber.getText().toString();
-
-                // Start task to fetch information about the user
-                task = new ConfigureUser(mName, mEmail, mPhoneNumber);
-                task.execute((Void) null);
-
-                ProfileActivity.name.setText(mName);
-                ProfileActivity.email.setText(mEmail);
-                ProfileActivity.phoneNumber.setText(mPhoneNumber);
-
-                Toast.makeText(getActivity(), "Account Updated", Toast.LENGTH_LONG).show();
-                dismiss(); // Close dialog
-            }
-        });
-
-        cancel = (Button) s.findViewById(R.id.dialogButtonCancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss(); // Close dialog
-            }
-        });
+//        save = (Button) rootView.findViewById(R.id.dialogButtonOK);
+//        save.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                String mName = name.getText().toString();
+//                String mEmail = email.getText().toString();
+//                String mPhoneNumber = phoneNumber.getText().toString();
+//
+//                // Start task to fetch information about the user
+//                task = new ConfigureUser(mName, mEmail, mPhoneNumber);
+//                task.execute((Void) null);
+//
+//                ProfileActivity.name.setText(mName);
+//                ProfileActivity.email.setText(mEmail);
+//                ProfileActivity.phoneNumber.setText(mPhoneNumber);
+//
+//                Toast.makeText(getActivity(), "Account Updated", Toast.LENGTH_LONG).show();
+//                dismiss(); // Close dialog
+//            }
+//        });
+//
+//        cancel = (Button) rootView.findViewById(R.id.dialogButtonCancel);
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dismiss(); // Close dialog
+//            }
+//        });
     }
 
     // Update user information
@@ -96,7 +111,7 @@ public class EditRestDialogFragment extends DialogFragment {
             HashMap<String,String> data = new HashMap<>();
             data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
 
-            String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+            result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 
             return result;
         }

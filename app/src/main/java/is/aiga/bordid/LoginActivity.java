@@ -36,6 +36,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -340,32 +344,56 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            String success = s.split(":")[0];
-            if (success.equals("true")) {
+            // Creating a JSONObject from a String
+            try {
+                JSONObject nodeRoot  = new JSONObject(s);
+                if(nodeRoot.getString("Success").equals("TRUE")) {
+                    String s1 = nodeRoot.getString("OwnerId");
+                    String s2 = nodeRoot.getString("OwnerUsername");
+                    String s3 = nodeRoot.getString("OwnerName");
+                    String s4 = nodeRoot.getString("OwnerEmail");
+                    String s5 = nodeRoot.getString("OwnerPhoneNumber");
+                    String s6 = nodeRoot.getString("RestId");
+                    String s7 = nodeRoot.getString("RestName");
+                    String s8 = nodeRoot.getString("RestAddress");
+                    String s9 = nodeRoot.getString("RestZip");
+                    String s10 = nodeRoot.getString("RestCity");
+                    String s11 = nodeRoot.getString("RestLatitude");
+                    String s12 = nodeRoot.getString("RestLongitude");
+                    String s13 = nodeRoot.getString("RestPhoneNumber");
+                    String s14 = nodeRoot.getString("RestUrl");
+                    String s15 = nodeRoot.getString("RestNumSeats");
+                    String s16 = nodeRoot.getString("RestEmail");
 
-                Log.d("IED", "success!!!");
-                int i = Integer.parseInt(s.split(":")[1]);
-                String n = s.split(":")[2];
-                String e = s.split(":")[3];
-                String p = s.split(":")[4];
+                    // Save login information
+                    SaveSharedPreference.setUserId(LoginActivity.this, s1);
+                    SaveSharedPreference.setUserName(LoginActivity.this, s2);
+                    SaveSharedPreference.setName(LoginActivity.this, s3);
+                    SaveSharedPreference.setEmail(LoginActivity.this, s4);
+                    SaveSharedPreference.setPhoneNumber(LoginActivity.this, s5);
+                    SaveSharedPreference.setRestaurantId(LoginActivity.this, s6);
+                    SaveSharedPreference.setRestaurantName(LoginActivity.this, s7);
+                    SaveSharedPreference.setAddress(LoginActivity.this, s8);
+                    SaveSharedPreference.setZip(LoginActivity.this, s9);
+                    SaveSharedPreference.setCity(LoginActivity.this, s10);
+                    SaveSharedPreference.setLatitude(LoginActivity.this, s11);
+                    SaveSharedPreference.setLongitude(LoginActivity.this, s12);
+                    SaveSharedPreference.setRestaurantPhoneNumber(LoginActivity.this, s13);
+                    SaveSharedPreference.setUrl(LoginActivity.this, s14);
+                    SaveSharedPreference.setNumSeats(LoginActivity.this, s15);
+                    SaveSharedPreference.setRestaurantEmail(LoginActivity.this, s16);
 
-                int id = i;
-                String name = n;
-                String email = e;
-                String phoneNumber = p;
+                    // Start Profile Activity
+                    Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                    startActivity(i);
+                    finish(); // Shut down current activity
 
-                SaveSharedPreference.clearUserName(LoginActivity.this);
-                SaveSharedPreference.setUserName(LoginActivity.this, mUserName, name);
-//                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
-//                i.putExtra("username", mUserName);
-//                startActivity(i);
-//                finish();
-
-                Log.d("IED", "SavedPreference: " + SaveSharedPreference.getUserName(LoginActivity.this));
-                Log.d("IED", "SavedPreference: " + SaveSharedPreference.getName(LoginActivity.this));
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                } else {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 

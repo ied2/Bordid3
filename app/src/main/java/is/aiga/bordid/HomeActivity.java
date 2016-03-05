@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -34,7 +35,6 @@ public class HomeActivity extends AppCompatActivity
                 // Check if user is logged in
                 if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
                     Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
-                    pi.putExtra("username", SaveSharedPreference.getUserName(HomeActivity.this));
                     startActivity(pi);
                 } else {
                     Intent li = new Intent(HomeActivity.this, LoginActivity.class);
@@ -70,10 +70,8 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        SaveSharedPreference.clearUserName(HomeActivity.this);
         // Check if user is logged in
-        if(SaveSharedPreference.getUserName(this).length() > 0)
-        {
+        if(SaveSharedPreference.getUserName(this).length() > 0) {
             Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_SHORT).show();
         }
     }

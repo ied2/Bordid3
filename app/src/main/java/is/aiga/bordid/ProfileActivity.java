@@ -1,5 +1,6 @@
 package is.aiga.bordid;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -21,12 +22,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/GetUser.php";
     public static final String UPLOAD_KEY = "username";
 
-    private Button buttonLogout, buttonConfigure, buttonRestaurantConfigure;
-    public static TextView name, email, phoneNumber;
+    public Button buttonLogout, buttonConfigure, buttonRestaurantConfigure;
+    public static TextView name, email, phoneNumber, restaurant_name;
 
     public static int id;
     public static String userName;
-    private UserInformation task;
+    //private UserInformation task;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,25 +37,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//            userName = extras.getString("username");
-//            Toast.makeText(ProfileActivity.this, "Logged in as: " + userName, Toast.LENGTH_LONG).show();
-//        }
-//
-//        // TextViews to be configured by user
-//        name = (TextView) findViewById(R.id.profile_name);
-//        email = (TextView) findViewById(R.id.profile_email);
-//        phoneNumber = (TextView) findViewById(R.id.profile_phoneNumber);
-//
-//        // Buttons
-//        buttonLogout = (Button) findViewById(R.id.button_logout);
-//        buttonLogout.setOnClickListener(this);
-//        buttonConfigure = (Button) findViewById(R.id.profile_configure);
-//        buttonConfigure.setOnClickListener(this);
-//        buttonRestaurantConfigure = (Button) findViewById(R.id.profile_configure_restaurant);
-//        buttonRestaurantConfigure.setOnClickListener(this);
-//
+        // TextViews found
+        name = (TextView) findViewById(R.id.profile_name);
+        email = (TextView) findViewById(R.id.profile_email);
+        phoneNumber = (TextView) findViewById(R.id.profile_phoneNumber);
+        restaurant_name = (TextView) findViewById(R.id.profile_restaurant_name);
+
+        // Filling TextViews with user information
+        name.setText(SaveSharedPreference.getName(this));
+        email.setText(SaveSharedPreference.getEmail(this));
+        phoneNumber.setText(SaveSharedPreference.getPhoneNumber(this));
+        restaurant_name.setText(SaveSharedPreference.getRestaurantName(this));
+
+        // Buttons initialized
+        buttonLogout = (Button) findViewById(R.id.button_logout);
+        buttonLogout.setOnClickListener(this);
+        buttonConfigure = (Button) findViewById(R.id.profile_configure);
+        buttonConfigure.setOnClickListener(this);
+        buttonRestaurantConfigure = (Button) findViewById(R.id.profile_configure_restaurant);
+        buttonRestaurantConfigure.setOnClickListener(this);
+
 //        // Start task to fetch information about the user
 //        task = new UserInformation(userName);
 //        task.execute((Void) null);
@@ -64,62 +66,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_logout:
-                SaveSharedPreference.clearUserName(this);
+                SaveSharedPreference.clearUser(this);
                 finish();
                 break;
 
                 // Start a dialog to configure the profile
             case R.id.profile_configure:
                 FragmentManager fm = getFragmentManager();
-                MyDialogFragment dialogFragment = new MyDialogFragment ();
+                MyDialogFragment dialogFragment = new MyDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");
+                break;
 
                 // Start a dialog to configure the profile
             case R.id.profile_configure_restaurant:
                 FragmentManager fm2 = getFragmentManager();
-                MyDialogFragment dialogFragment2 = new MyDialogFragment ();
+                EditRestDialogFragment dialogFragment2 = new EditRestDialogFragment();
                 dialogFragment2.show(fm2, "Sample Fragment");
+                break;
+
             default:
                 break;
-        }
-    }
-
-    // Get user information
-    public class UserInformation extends AsyncTask<Void, Void, String> {
-
-        private final String mUserName;
-
-        UserInformation(String username) {
-            mUserName = username;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            Service service = new Service(); // Service class is used to validate username and password
-
-            HashMap<String,String> data = new HashMap<>();
-            data.put(UPLOAD_KEY, mUserName); // UPLOAD_KEY = "username", keyword for server POST request
-
-            String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(final String s) {
-            Log.d("IED", "GetUser: " + s);
-
-            int i = Integer.parseInt(s.split(":")[0]);
-            String n = s.split(":")[1];
-            String e = s.split(":")[2];
-            String p = s.split(":")[3];
-
-            id = i;
-            name.setText(n);
-            email.setText(e);
-            phoneNumber.setText(p);
-
         }
     }
 
@@ -136,3 +102,54 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 }
+
+
+
+
+
+
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            userName = extras.getString("username");
+//            Toast.makeText(ProfileActivity.this, "Logged in as: " + userName, Toast.LENGTH_LONG).show();
+//        }
+
+
+//// Get user information
+//public class UserInformation extends AsyncTask<Void, Void, String> {
+//
+//    private final String mUserName;
+//
+//    UserInformation(String username) {
+//        mUserName = username;
+//    }
+//
+//    @Override
+//    protected String doInBackground(Void... params) {
+//
+//        Service service = new Service(); // Service class is used to validate username and password
+//
+//        HashMap<String,String> data = new HashMap<>();
+//        data.put(UPLOAD_KEY, mUserName); // UPLOAD_KEY = "username", keyword for server POST request
+//
+//        String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+//
+//        return result;
+//    }
+//
+//    @Override
+//    protected void onPostExecute(final String s) {
+//        Log.d("IED", "GetUser: " + s);
+//
+//        int i = Integer.parseInt(s.split(":")[0]);
+//        String n = s.split(":")[1];
+//        String e = s.split(":")[2];
+//        String p = s.split(":")[3];
+//
+//        id = i;
+//        name.setText(n);
+//        email.setText(e);
+//        phoneNumber.setText(p);
+//
+//    }
+//}

@@ -1,6 +1,8 @@
 package is.aiga.bordid;
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,30 +21,33 @@ public class MyDialogFragment extends DialogFragment {
     public static final String UPLOAD_KEY = "user";
     private ConfigureUser task;
 
+    private String result;
+
     private static EditText name, email, phoneNumber;
     private Button save, cancel;
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_configure, container, false);
+        rootView = inflater.inflate(R.layout.fragment_configure, container, false);
         getDialog().setTitle("Configure");
 
         // Initialize few things
-        init(rootView);
+        init();
 
         return rootView;
     }
 
-    private void init(View s) {
-        name = (EditText) s.findViewById(R.id.dialog_name);
-        email = (EditText) s.findViewById(R.id.dialog_email);
-        phoneNumber = (EditText) s.findViewById(R.id.dialog_phonenumber);
+    private void init() {
+        name = (EditText) rootView.findViewById(R.id.dialog_name);
+        email = (EditText) rootView.findViewById(R.id.dialog_email);
+        phoneNumber = (EditText) rootView.findViewById(R.id.dialog_phonenumber);
 
         name.setText(ProfileActivity.name.getText().toString());
         email.setText(ProfileActivity.email.getText().toString());
         phoneNumber.setText(ProfileActivity.phoneNumber.getText().toString());
 
-        save = (Button) s.findViewById(R.id.dialogButtonOK);
+        save = (Button) rootView.findViewById(R.id.dialogButtonOK);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +69,7 @@ public class MyDialogFragment extends DialogFragment {
             }
         });
 
-        cancel = (Button) s.findViewById(R.id.dialogButtonCancel);
+        cancel = (Button) rootView.findViewById(R.id.dialogButtonCancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,22 +94,23 @@ public class MyDialogFragment extends DialogFragment {
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String updateString = ProfileActivity.id + ":" + name + ":" + email + ":" + phoneNumber;
+            String updateString = SaveSharedPreference.getUserId(getActivity()) + ":" + name + ":" + email + ":" + phoneNumber;
 
             Log.d("IED", "updateString" +  updateString);
 
             HashMap<String,String> data = new HashMap<>();
             data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
 
-            String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+            result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 
             return result;
         }
 
         @Override
         protected void onPostExecute(final String s) {
-            Log.d("IED", "GetUser: " + s);
-
+            SaveSharedPreference.setName(rootView.getContext(), name);
+            SaveSharedPreference.setEmail(rootView.getContext(), email);
+            SaveSharedPreference.setPhoneNumber(rootView.getContext(), phoneNumber);
         }
     }
 }
