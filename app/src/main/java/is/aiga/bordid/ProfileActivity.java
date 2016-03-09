@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/GetUser.php";
     public static final String UPLOAD_KEY = "username";
 
+    private ImageView profile_image;
     public Button buttonLogout, buttonConfigure, buttonRestaurantConfigure;
     public static TextView name, email, phoneNumber, restaurant_name;
 
@@ -56,10 +58,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonConfigure.setOnClickListener(this);
         buttonRestaurantConfigure = (Button) findViewById(R.id.profile_configure_restaurant);
         buttonRestaurantConfigure.setOnClickListener(this);
-
-//        // Start task to fetch information about the user
-//        task = new UserInformation(userName);
-//        task.execute((Void) null);
+        profile_image = (ImageView) findViewById(R.id.profile_photo);
+        profile_image.setOnClickListener(this);
     }
 
     @Override
@@ -83,6 +83,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 EditRestDialogFragment dialogFragment2 = new EditRestDialogFragment();
                 dialogFragment2.show(fm2, "Sample Fragment");
                 break;
+
+                // Start a dialog to change profile image
+            case R.id.profile_photo:
+                FragmentManager fm3 = getFragmentManager();
+                UploadImageDialogFragment dialogFragment3 = new UploadImageDialogFragment();
+                dialogFragment3.show(fm3, "Sample Fragment");
 
             default:
                 break;

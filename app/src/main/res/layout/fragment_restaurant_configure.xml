@@ -9,14 +9,14 @@
         android:id="@+id/dialog_restaurant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Name:"
+        android:hint="Name"
         android:textColor="#000000"/>
 
     <EditText
         android:id="@+id/dialog_restaurant_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Email:"
+        android:hint="Email"
         android:textColor="#000000"
         android:layout_below="@+id/dialog_restaurant_name"/>
 
@@ -24,7 +24,7 @@
         android:id="@+id/dialog_restaurant_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Address:"
+        android:hint="Address"
         android:textColor="#000000"
         android:layout_below="@+id/dialog_restaurant_email"/>
 
@@ -32,7 +32,7 @@
         android:id="@+id/dialog_restaurant_zip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Zip:"
+        android:hint="Zip"
         android:layout_below="@+id/dialog_restaurant_address"
         android:textColor="#000000"/>
 
@@ -40,7 +40,7 @@
         android:id="@+id/dialog_restaurant_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="City:"
+        android:hint="City"
         android:layout_below="@+id/dialog_restaurant_zip"
         android:textColor="#000000"/>
 
@@ -48,7 +48,7 @@
         android:id="@+id/dialog_restaurant_phonenumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Phone Number:"
+        android:hint="Phone Number"
         android:layout_below="@+id/dialog_restaurant_city"
         android:textColor="#000000"/>
 
@@ -56,7 +56,7 @@
         android:id="@+id/dialog_restaurant_numSeats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Number of Seats:"
+        android:hint="Number of Seats"
         android:layout_below="@+id/dialog_restaurant_phonenumber"
         android:textColor="#000000"/>
 
@@ -64,7 +64,7 @@
         android:id="@+id/dialog_restaurant_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Logo URL:"
+        android:hint="Logo URL"
         android:layout_below="@+id/dialog_restaurant_numSeats"
         android:textColor="#000000"/>
 
@@ -72,7 +72,7 @@
         android:id="@+id/dialog_restaurant_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Latitude:"
+        android:hint="Latitude"
         android:layout_below="@+id/dialog_restaurant_url"
         android:textColor="#000000"/>
 
@@ -80,12 +80,12 @@
         android:id="@+id/dialog_restaurant_longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Longitude:"
+        android:hint="Longitude"
         android:layout_below="@+id/dialog_restaurant_latitude"
         android:textColor="#000000"/>
 
     <Button
-        android:id="@+id/dialogButtonOK"
+        android:id="@+id/rdialogButtonOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_restaurant_longitude"
@@ -94,11 +94,11 @@
         android:layout_marginRight="5dp" />
 
     <Button
-        android:id="@+id/dialogButtonCancel"
+        android:id="@+id/rdialogButtonCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_restaurant_longitude"
-        android:layout_toRightOf="@+id/dialogButtonOK"
+        android:layout_toRightOf="@+id/rdialogButtonOK"
         android:text="Cancel"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp" />

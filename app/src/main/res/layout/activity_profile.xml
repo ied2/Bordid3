@@ -7,6 +7,7 @@
     android:background="#ececed">
 
     <ImageView
+        android:id="@+id/profile_photo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/profile_picture"

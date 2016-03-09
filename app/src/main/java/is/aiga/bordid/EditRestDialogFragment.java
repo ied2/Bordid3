@@ -13,15 +13,15 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class EditRestDialogFragment extends DialogFragment {
+public class EditRestDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/ConfigureUser.php";
-    public static final String UPLOAD_KEY = "user";
-    private ConfigureUser task;
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/EditRestaurant.php";
+    public static final String UPLOAD_KEY = "restaurant";
+    private ConfigureRestaurant task;
 
     private String result;
 
-    private static EditText name, email, address, zip, city, phoneNumber, numSeats, latitude, longitude;
+    private static EditText name, email, address, zip, city, phoneNumber, numSeats, url, latitude, longitude;
     private Button save, cancel;
     private View rootView;
 
@@ -44,6 +44,7 @@ public class EditRestDialogFragment extends DialogFragment {
         city = (EditText) rootView.findViewById(R.id.dialog_restaurant_city);
         phoneNumber = (EditText) rootView.findViewById(R.id.dialog_restaurant_phonenumber);
         numSeats = (EditText) rootView.findViewById(R.id.dialog_restaurant_numSeats);
+        url = (EditText) rootView.findViewById(R.id.dialog_restaurant_url);
         latitude = (EditText) rootView.findViewById(R.id.dialog_restaurant_latitude);
         longitude = (EditText) rootView.findViewById(R.id.dialog_restaurant_longitude);
 
@@ -57,46 +58,70 @@ public class EditRestDialogFragment extends DialogFragment {
         latitude.setText(SaveSharedPreference.getLatitude(rootView.getContext()));
         longitude.setText(SaveSharedPreference.getLongitude(rootView.getContext()));
 
-//        save = (Button) rootView.findViewById(R.id.dialogButtonOK);
-//        save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String mName = name.getText().toString();
-//                String mEmail = email.getText().toString();
-//                String mPhoneNumber = phoneNumber.getText().toString();
-//
-//                // Start task to fetch information about the user
-//                task = new ConfigureUser(mName, mEmail, mPhoneNumber);
-//                task.execute((Void) null);
-//
-//                ProfileActivity.name.setText(mName);
-//                ProfileActivity.email.setText(mEmail);
-//                ProfileActivity.phoneNumber.setText(mPhoneNumber);
-//
-//                Toast.makeText(getActivity(), "Account Updated", Toast.LENGTH_LONG).show();
-//                dismiss(); // Close dialog
-//            }
-//        });
-//
-//        cancel = (Button) rootView.findViewById(R.id.dialogButtonCancel);
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss(); // Close dialog
-//            }
-//        });
+        save = (Button) rootView.findViewById(R.id.rdialogButtonOK);
+        cancel = (Button) rootView.findViewById(R.id.rdialogButtonCancel);
+        save.setOnClickListener(this);
+        cancel.setOnClickListener(this);
     }
 
-    // Update user information
-    public class ConfigureUser extends AsyncTask<Void, Void, String> {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rdialogButtonOK :
+                String mName = name.getText().toString();
+                String mEmail = email.getText().toString();
+                String mAddress = address.getText().toString();
+                String mZip = zip.getText().toString();
+                String mCity = city.getText().toString();
+                String mPhoneNumber = phoneNumber.getText().toString();
+                String mNumSeats = numSeats.getText().toString();
+                String mUrl = url.getText().toString();
+                String mLatitude = latitude.getText().toString();
+                String mLongitude = longitude.getText().toString();
 
-        private String name, email, phoneNumber;
+                // Start task to fetch information about the user
+                task = new ConfigureRestaurant(mName, mEmail, mAddress, mZip, mCity, mPhoneNumber, mNumSeats, mUrl, mLatitude, mLongitude);
+                task.execute((Void) null);
 
-        ConfigureUser(String name, String email, String phoneNumber) {
-            this.name = name;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
+                // Update user information in the app
+                ProfileActivity.restaurant_name.setText(mName);
+                SaveSharedPreference.setRestaurantName(getActivity(), mName);
+                SaveSharedPreference.setRestaurantEmail(getActivity(), mEmail);
+                SaveSharedPreference.setAddress(getActivity(), mAddress);
+                SaveSharedPreference.setZip(getActivity(), mZip);
+                SaveSharedPreference.setCity(getActivity(), mCity);
+                SaveSharedPreference.setRestaurantPhoneNumber(getActivity(), mPhoneNumber);
+                SaveSharedPreference.setNumSeats(getActivity(), mNumSeats);
+                SaveSharedPreference.setUrl(getActivity(), mUrl);
+                SaveSharedPreference.setLatitude(getActivity(), mLatitude);
+                SaveSharedPreference.setLongitude(getActivity(), mLongitude);
+
+                Toast.makeText(getActivity(), "Account Updated", Toast.LENGTH_LONG).show();
+                dismiss(); // Close dialog
+
+                break;
+            case R.id.rdialogButtonCancel:
+                dismiss(); // Close dialog
+        }
+    }
+
+    // Update user's restaurant information
+    public class ConfigureRestaurant extends AsyncTask<Void, Void, String> {
+
+        private String cname, cemail, caddress, czip, ccity, cphoneNumber, cnumSeats, curl, clatitude, clongitude;
+
+        ConfigureRestaurant(String name, String email, String address, String zip, String city, String phoneNumber, String numSeats, String url, String latitude, String longitude) {
+            this.cname = name;
+            this.cemail = email;
+            this.caddress = address;
+            this.czip = zip;
+            this.ccity = city;
+            this.cphoneNumber = phoneNumber;
+            this.cnumSeats = numSeats;
+            this.curl = url;
+            this.clatitude = latitude;
+            this.clongitude = longitude;
+
         }
 
         @Override
@@ -104,12 +129,13 @@ public class EditRestDialogFragment extends DialogFragment {
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String updateString = ProfileActivity.id + ":" + name + ":" + email + ":" + phoneNumber;
+            String updateString = SaveSharedPreference.getUserId(getActivity()) + ":" + cname + ":" + cemail + ":" + caddress + ":" + czip + ":" + ccity + ":" + cphoneNumber +
+                                    ":" + cnumSeats + ":" + curl + ":" + clatitude + ":" + clongitude;
 
             Log.d("IED", "updateString" +  updateString);
 
             HashMap<String,String> data = new HashMap<>();
-            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
+            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "restaurant", keyword for server POST request
 
             result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 
@@ -118,7 +144,7 @@ public class EditRestDialogFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(final String s) {
-            Log.d("IED", "GetUser: " + s);
+            Log.d("IED", "EditRestaurant: " + s);
 
         }
     }
