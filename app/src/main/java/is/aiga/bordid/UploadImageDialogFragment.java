@@ -32,6 +32,7 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
     private ImageView profile_picture;
     private Button buttonUpload, buttonSave;
     private View rootView;
+    // comment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
