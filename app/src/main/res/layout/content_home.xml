@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/chocho"/>
+            android:src="@drawable/ribs"/>
         <TextView
             android:gravity="center"
             android:textSize="30dp"
@@ -28,8 +28,9 @@
             android:id="@+id/near_me"
             android:layout_below="@id/chocho"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/coco"/>
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/restaurantss"/>
 
             <TextView
                 android:gravity="center"
@@ -39,8 +40,8 @@
                 android:id="@+id/surprise"
                 android:layout_below="@id/chocho"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/coco"/>
+                android:layout_height="200dp"
+                android:background="@drawable/restaurant"/>
 
         <ImageView
             android:id="@+id/oldspice"
@@ -48,14 +49,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/oldspice"/>
+            android:src="@drawable/newyork"/>
         <ImageView
             android:id="@+id/threeamigos"
             android:layout_below="@+id/oldspice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/threeamigos"/>
+            android:src="@drawable/oldspice"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
