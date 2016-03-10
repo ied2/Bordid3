@@ -22,6 +22,7 @@ public class SaveSharedPreference {
     static final String PREF_URL = "url";
     static final String PREF_NUMSEATS = "num_seats";
     static final String PREF_RESTAURANT_EMAIL = "restaurant_email";
+    static final String PREF_PROFILE_IMAGE = "profile_image";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -123,6 +124,12 @@ public class SaveSharedPreference {
         editor.commit();
     }
 
+    public static void setProfileImage(Context ctx, String profileImage){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PREF_PROFILE_IMAGE, profileImage);
+        editor.commit();
+    }
+
     public static String getUserId(Context ctx)
     {
         return getSharedPreferences(ctx).getString(PREF_USER_ID, "");
@@ -201,6 +208,11 @@ public class SaveSharedPreference {
     public static String getRestaurantEmail(Context ctx)
     {
         return getSharedPreferences(ctx).getString(PREF_RESTAURANT_EMAIL, "");
+    }
+
+    public static String getProfileImage(Context ctx)
+    {
+        return getSharedPreferences(ctx).getString(PREF_PROFILE_IMAGE, "");
     }
 
     public static void clearUser(Context ctx)

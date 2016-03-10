@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +34,6 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
     private ImageView profile_picture;
     private Button buttonUpload, buttonSave;
     private View rootView;
-    // comment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,9 +51,11 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
         buttonUpload = (Button) rootView.findViewById(R.id.profile_choose_photo);
         buttonSave = (Button) rootView.findViewById(R.id.profile_save);
 
+        if(!SaveSharedPreference.getProfileImage(getActivity()).equals("")) {
+            Picasso.with(getActivity()).load(SaveSharedPreference.getProfileImage(getActivity())).into(profile_picture);
+        }
         buttonUpload.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
-
     }
 
     @Override
@@ -111,12 +114,16 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
                 loading.dismiss();
                 Log.d("IED", s);
                 Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                ProfileActivity.profile_image.setImageBitmap(bitmap);
+                SaveSharedPreference.setProfileImage(getActivity(), s);
+                dismiss();
             }
 
             @Override
             protected String doInBackground(Bitmap... params) {
                 Bitmap bitmap = params[0]; //params[0] = ui.execute(bitmap)
                 String uploadImage = getStringImage(bitmap);
+                uploadImage = SaveSharedPreference.getUserId(getActivity()) + ":" + uploadImage;
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put(UPLOAD_KEY, uploadImage);

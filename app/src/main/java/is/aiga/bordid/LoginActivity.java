@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View v) {
                 Intent i = new Intent(LoginActivity.this, CreateAccountActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -364,6 +365,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     String s14 = nodeRoot.getString("RestUrl");
                     String s15 = nodeRoot.getString("RestNumSeats");
                     String s16 = nodeRoot.getString("RestEmail");
+                    String s17 = nodeRoot.getString("ProfileImageUrl");
 
                     // Save login information
                     SaveSharedPreference.setUserId(LoginActivity.this, s1);
@@ -382,6 +384,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     SaveSharedPreference.setUrl(LoginActivity.this, s14);
                     SaveSharedPreference.setNumSeats(LoginActivity.this, s15);
                     SaveSharedPreference.setRestaurantEmail(LoginActivity.this, s16);
+                    SaveSharedPreference.setProfileImage(LoginActivity.this, s17);
 
                     // Start Profile Activity
                     Intent i = new Intent(LoginActivity.this, ProfileActivity.class);

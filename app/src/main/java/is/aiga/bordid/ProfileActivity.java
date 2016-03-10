@@ -16,20 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/GetUser.php";
-    public static final String UPLOAD_KEY = "username";
-
-    private ImageView profile_image;
+    public static ImageView profile_image;
     public Button buttonLogout, buttonConfigure, buttonRestaurantConfigure;
     public static TextView name, email, phoneNumber, restaurant_name;
-
     public static int id;
-    public static String userName;
-    //private UserInformation task;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonRestaurantConfigure = (Button) findViewById(R.id.profile_configure_restaurant);
         buttonRestaurantConfigure.setOnClickListener(this);
         profile_image = (ImageView) findViewById(R.id.profile_photo);
+        if(!SaveSharedPreference.getProfileImage(this).equals("")) Picasso.with(this).load(SaveSharedPreference.getProfileImage(this)).into(profile_image);
         profile_image.setOnClickListener(this);
     }
 

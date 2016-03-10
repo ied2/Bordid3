@@ -9,7 +9,7 @@
         android:id="@+id/profile_image"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:src="@drawable/profile_picture"/>
+        android:src="@drawable/upload_image"/>
 
     <Button
         android:id="@+id/profile_choose_photo"

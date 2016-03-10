@@ -10,7 +10,7 @@
         android:id="@+id/profile_photo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/profile_picture"
+        android:src="@drawable/upload_image"
         android:layout_margin="5dp"/>
 
     <RelativeLayout

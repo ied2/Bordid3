@@ -77,10 +77,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
             Log.d("IED", result);
-//            if(result.equals("true")) {
-//                CREATE_SUCCESSFUL = true;
-//                Log.d("IED", "Logged in as: " + mUserName);
-//            }
 
             return result;
         }
@@ -90,8 +86,16 @@ public class CreateAccountActivity extends AppCompatActivity {
             mAuthTask = null;
             //showProgress(false);
 
-            if (success.equals("Account Created")) {
-                Toast.makeText(CreateAccountActivity.this, success, Toast.LENGTH_SHORT).show();
+            String s = success.split(":")[0];
+            String id = success.split(":")[1];
+
+            if (s.equals("Account Created")) {
+                Toast.makeText(CreateAccountActivity.this, s, Toast.LENGTH_SHORT).show();
+                SaveSharedPreference.setUserId(CreateAccountActivity.this, id);
+                SaveSharedPreference.setUserName(CreateAccountActivity.this, mUserName);
+                Intent i = new Intent(CreateAccountActivity.this, ProfileActivity.class);
+                startActivity(i);
+                finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
 //                mPasswordView.requestFocus();
