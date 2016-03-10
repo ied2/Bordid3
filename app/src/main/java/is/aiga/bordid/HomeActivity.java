@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +29,7 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check if user is logged in
-                if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
-                    Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
-                    startActivity(pi);
-                } else {
-                    Intent li = new Intent(HomeActivity.this, LoginActivity.class);
-                    startActivity(li);
-                }
-            }
-        });
+        fab.setOnClickListener(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -53,22 +41,10 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView textview = (TextView)findViewById(R.id.near_me);
-        textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
-                startActivity(i);
-            }
-        });
+        textview.setOnClickListener(this);
 
         TextView textview2 = (TextView)findViewById(R.id.surprise);
-        textview2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, SurpriseActivity.class);
-                startActivity(i);
-            }
-        });
+        textview2.setOnClickListener(this);
 
         // Check if user is logged in
         if(SaveSharedPreference.getUserName(this).length() > 0) {
@@ -123,5 +99,32 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                // Check if user is logged in
+                if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
+                    Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
+                    startActivity(pi);
+                } else {
+                    // If user is not logged in, sign in
+                    Intent li = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(li);
+                }
+                break;
+
+            case R.id.near_me:
+                Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
+                startActivity(i);
+                break;
+
+            case R.id.surprise:
+                Intent i2 = new Intent(HomeActivity.this, SurpriseActivity.class);
+                startActivity(i2);
+                break;
+        }
     }
 }

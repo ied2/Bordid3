@@ -64,6 +64,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.button_logout:
                 SaveSharedPreference.clearUser(this);
+                Log.d("IED", SaveSharedPreference.getUserId(this));
+                Log.d("IED", SaveSharedPreference.getRestaurantId(this));
+
                 finish();
                 break;
 

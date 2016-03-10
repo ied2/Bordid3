@@ -79,7 +79,7 @@ public class EditRestDialogFragment extends DialogFragment implements View.OnCli
                 String mLatitude = latitude.getText().toString();
                 String mLongitude = longitude.getText().toString();
 
-                // Start task to fetch information about the user
+                // Save new information about the user
                 task = new ConfigureRestaurant(mName, mEmail, mAddress, mZip, mCity, mPhoneNumber, mNumSeats, mUrl, mLatitude, mLongitude);
                 task.execute((Void) null);
 
