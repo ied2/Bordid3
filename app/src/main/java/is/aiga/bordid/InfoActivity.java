@@ -13,7 +13,7 @@ import android.view.MenuItem;
 /**
  * Created by Gunnar Ingi on 23.2.2016.
  */
-public class SurpriseActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

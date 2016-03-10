@@ -1,6 +1,7 @@
 package is.aiga.bordid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,13 +70,6 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> implem
 
     @Override
     public void onClick(View v) {
-//        if(v.findViewById(R.id.dagskra).getVisibility() == View.INVISIBLE) {
-////                    view.findViewById(R.id.movie_poster).setAlpha((float) 0.1);
-//
-//            v.findViewById(R.id.dagskra).setVisibility(View.VISIBLE);
-//        }else {
-////                    view.findViewById(R.id.movie_poster).setAlpha((float) 1);
-//            v.findViewById(R.id.dagskra).setVisibility(View.INVISIBLE);
-//        }
+//        Intent i = new Intent(context, )
     }
 }

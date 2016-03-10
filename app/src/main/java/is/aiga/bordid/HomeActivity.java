@@ -3,8 +3,6 @@ package is.aiga.bordid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -82,7 +80,7 @@ public class HomeActivity extends AppCompatActivity
 
                 // Start activity to find a random restaurant
             case R.id.surprise:
-                Intent i2 = new Intent(HomeActivity.this, SurpriseActivity.class);
+                Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
                 startActivity(i2);
                 break;
         }
