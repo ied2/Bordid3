@@ -2,6 +2,7 @@ package is.aiga.bordid;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,8 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> implem
 
         holder.title.setText(current.rName);
 
-        Picasso.with(this.context)
-                .load(current.rImage)
-                .into(holder.logo);
+        if(current.rImage.equals("999")) Picasso.with(this.context).load(R.drawable.upload_image).fit().into(holder.logo);
+        else Picasso.with(this.context).load(current.rImage).fit().into(holder.logo);
     }
 
     @Override

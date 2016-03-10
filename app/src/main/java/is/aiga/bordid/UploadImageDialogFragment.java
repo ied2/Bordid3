@@ -113,7 +113,7 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
                 super.onPostExecute(s);
                 loading.dismiss();
                 Log.d("IED", s);
-                Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Account Updated", Toast.LENGTH_LONG).show();
                 ProfileActivity.profile_image.setImageBitmap(bitmap);
                 SaveSharedPreference.setProfileImage(getActivity(), s);
                 dismiss();
@@ -121,7 +121,7 @@ public class UploadImageDialogFragment extends DialogFragment implements View.On
 
             @Override
             protected String doInBackground(Bitmap... params) {
-                Bitmap bitmap = params[0]; //params[0] = ui.execute(bitmap)
+                Bitmap bitmap = params[0];
                 String uploadImage = getStringImage(bitmap);
                 uploadImage = SaveSharedPreference.getUserId(getActivity()) + ":" + uploadImage;
                 HashMap<String,String> data = new HashMap<>();

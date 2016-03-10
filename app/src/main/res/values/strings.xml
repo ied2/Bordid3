@@ -14,6 +14,7 @@
     <string name="error_field_required">Field Required</string>
     <string name="error_invalid_email">Invalid Username</string>
     <string name="error_incorrect_password">Incorrect Password</string>
+    <string name="error_incorrect_username">Incorrect Username</string>
     <string name="create_account">Create Account</string>
     <string name="button_logout">Logout</string>
 </resources>
