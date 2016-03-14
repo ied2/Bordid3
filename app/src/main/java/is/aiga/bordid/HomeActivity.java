@@ -1,12 +1,8 @@
 package is.aiga.bordid;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -76,7 +72,7 @@ public class HomeActivity extends AppCompatActivity
                 }
                 break;
 
-                // Start activity to find restaurants near me
+                 // Start activity to find restaurants near me
             case R.id.near_me:
                 Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
                 startActivity(i);
