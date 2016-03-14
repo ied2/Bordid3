@@ -17,4 +17,6 @@
     <string name="error_incorrect_username">Incorrect Username</string>
     <string name="create_account">Create Account</string>
     <string name="button_logout">Logout</string>
+    <string name="search_title">SearchBar</string>
+    <string name="search_hint">Search</string>
 </resources>
