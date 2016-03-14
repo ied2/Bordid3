@@ -1,9 +1,11 @@
 package is.aiga.bordid;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -28,27 +30,63 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // Check if user is logged in, if so display the user name on screen
+        if(SaveSharedPreference.getUserName(this).length() > 0) {
+            Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_LONG).show();
+        }
+
+        initialize();
+    }
+
+    private void initialize() {
+
+        // Setup up click listeners
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView textview = (TextView)findViewById(R.id.near_me);
-        textview.setOnClickListener(this);
+        FloatingActionButton account = (FloatingActionButton) findViewById(R.id.fab);
+        account.setOnClickListener(this);
 
-        TextView textview2 = (TextView)findViewById(R.id.surprise);
-        textview2.setOnClickListener(this);
+        TextView nearMe = (TextView)findViewById(R.id.near_me);
+        nearMe.setOnClickListener(this);
 
-        // Check if user is logged in
-        if(SaveSharedPreference.getUserName(this).length() > 0) {
-            Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_SHORT).show();
+        TextView surprise = (TextView)findViewById(R.id.surprise);
+        surprise.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+
+                // Check if user is logged in
+                if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
+                    Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
+                    startActivity(pi);
+                } else {
+                    // If user is not logged in, redirect to login activity
+                    Intent li = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(li);
+                }
+                break;
+
+                // Start activity to find restaurants near me
+            case R.id.near_me:
+                Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
+                startActivity(i);
+                break;
+
+                // Start activity to find a random restaurant
+            case R.id.surprise:
+                Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
+                startActivity(i2);
+                break;
         }
     }
 
@@ -56,7 +94,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
+        inflater.inflate(R.menu.home, menu);
 
         return true;
     }
@@ -99,32 +137,5 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                // Check if user is logged in
-                if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
-                    Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
-                    startActivity(pi);
-                } else {
-                    // If user is not logged in, sign in
-                    Intent li = new Intent(HomeActivity.this, LoginActivity.class);
-                    startActivity(li);
-                }
-                break;
-
-            case R.id.near_me:
-                Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
-                startActivity(i);
-                break;
-
-            case R.id.surprise:
-                Intent i2 = new Intent(HomeActivity.this, SurpriseActivity.class);
-                startActivity(i2);
-                break;
-        }
     }
 }

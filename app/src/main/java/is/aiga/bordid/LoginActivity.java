@@ -6,7 +6,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,7 +17,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -34,12 +32,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +41,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/ValidateUser.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/PhotoUpload/ValidateUser.php";
     public static final String UPLOAD_KEY = "username";
     public boolean LOGIN_SUCCESSFUL;
 
@@ -96,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        // Go to Create Account activity if button is pressed
+        // Create Account activity if button is pressed
         Button createAccountButton = (Button) findViewById(R.id.login_create_account);
         createAccountButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -308,10 +302,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+    // Asynchronous login task
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
         private final String mUserName;
@@ -331,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String loginCode = mUserName + ":" + mPassword;
             Log.d("IED", loginCode);
             HashMap<String,String> data = new HashMap<>();
-            data.put(UPLOAD_KEY, loginCode); // UPLOAD_KEY = "username", keyword for server POST request
+            data.put(UPLOAD_KEY, loginCode);
 
             String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 
@@ -341,13 +332,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected void onPostExecute(final String s) {
+        protected void onPostExecute(final String data) {
             mAuthTask = null;
             showProgress(false);
 
-            // Creating a JSONObject from a String
+            // Creating a JSONObject from data, received from server
             try {
-                JSONObject nodeRoot  = new JSONObject(s);
+                JSONObject nodeRoot  = new JSONObject(data);
                 if(nodeRoot.getString("Success").equals("TRUE")) {
                     String s1 = nodeRoot.getString("OwnerId");
                     String s2 = nodeRoot.getString("OwnerUsername");
@@ -392,6 +383,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     finish(); // Shut down current activity
 
                 } else {
+                    // Tell user if password is incorrect
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
                 }

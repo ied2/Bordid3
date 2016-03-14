@@ -97,6 +97,8 @@ public class NearMeActivity extends AppCompatActivity {
             JSONObject item = (JSONObject) restaurants.get(i);
             String n = item.getString("RestName");
             String image = item.getString("RestImage");
+            Log.d("IED", n);
+            Log.d("IED", image);
             rName[i] = n;
             rImage[i] = image;
         }

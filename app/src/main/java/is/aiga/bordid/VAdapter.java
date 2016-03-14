@@ -1,6 +1,7 @@
 package is.aiga.bordid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,11 +41,10 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> implem
 
         Information current = data.get(position); // get current item from our list at given position
 
-        holder.title.setText(current.rName);
+        holder.name.setText(current.rName);
 
-        Picasso.with(this.context)
-                .load(current.rImage)
-                .into(holder.logo);
+        if(current.rImage.equals("999")) Picasso.with(this.context).load(R.drawable.upload_image).fit().into(holder.logo);
+        else Picasso.with(this.context).load(current.rImage).fit().into(holder.logo);
     }
 
     @Override
@@ -56,26 +54,20 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> implem
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title;
+        TextView name;
         ImageView logo;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             logo = (ImageView) itemView.findViewById(R.id.logo);
-            title = (TextView) itemView.findViewById(R.id.label);
+            name = (TextView) itemView.findViewById(R.id.label);
         }
     }
 
     @Override
     public void onClick(View v) {
-//        if(v.findViewById(R.id.dagskra).getVisibility() == View.INVISIBLE) {
-////                    view.findViewById(R.id.movie_poster).setAlpha((float) 0.1);
-//
-//            v.findViewById(R.id.dagskra).setVisibility(View.VISIBLE);
-//        }else {
-////                    view.findViewById(R.id.movie_poster).setAlpha((float) 1);
-//            v.findViewById(R.id.dagskra).setVisibility(View.INVISIBLE);
-//        }
+        Intent i = new Intent(context, InfoActivity.class);
+        context.startActivity(i);
     }
 }

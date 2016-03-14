@@ -145,7 +145,6 @@ public class EditRestDialogFragment extends DialogFragment implements View.OnCli
         @Override
         protected void onPostExecute(final String s) {
             Log.d("IED", "EditRestaurant: " + s);
-
         }
     }
 }
