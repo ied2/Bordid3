@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class RestaurantConfigureFragment extends DialogFragment implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/EditRestaurant.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/EditRestaurant.php";
     public static final String UPLOAD_KEY = "restaurant";
     private ConfigureRestaurant task;
 

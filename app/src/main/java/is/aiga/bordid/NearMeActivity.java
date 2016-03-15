@@ -22,7 +22,7 @@ import java.util.List;
 
 public class NearMeActivity extends AppCompatActivity {
 
-    public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/PhotoUpload/GetRestaurants.php";
+    public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
     private RecyclerView recyclerView;
     private VAdapter adapter;
     public static JSONArray restaurants = null; // Array of restaurants

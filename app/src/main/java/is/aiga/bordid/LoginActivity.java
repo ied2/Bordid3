@@ -41,7 +41,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/PhotoUpload/ValidateUser.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/ValidateUser.php";
     public static final String UPLOAD_KEY = "username";
     public boolean LOGIN_SUCCESSFUL;
 

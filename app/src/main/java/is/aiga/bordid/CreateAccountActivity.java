@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/CreateUser.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/CreateUser.php";
     public static final String UPLOAD_KEY = "username";
 
     private EditText mUsernameView, mPasswordView;

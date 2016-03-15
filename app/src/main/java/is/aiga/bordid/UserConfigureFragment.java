@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class UserConfigureFragment extends DialogFragment {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/ConfigureUser.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/ConfigureUser.php";
     public static final String UPLOAD_KEY = "user";
     private ConfigureUser task;
 

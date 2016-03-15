@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class UploadPhotoFragment extends DialogFragment implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/PhotoUpload/Upload.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Upload.php";
     public static final String UPLOAD_KEY = "image";
 
     private int PICK_IMAGE_REQUEST = 1;

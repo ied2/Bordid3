@@ -1,27 +1,46 @@
 package is.aiga.bordid;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-/**
- * Created by Gunnar Ingi on 23.2.2016.
- */
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.surprise_me);
+        setContentView(R.layout.activity_info);
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        init();
+    }
+
+    public void init() {
+        Button button = (Button)findViewById(R.id.order_table);
+        button.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.order_table:
+                if(SaveSharedPreference.getUserName(this).length() < 1){
+                    Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent i = new Intent(this, BookTableActivity.class);
+                    startActivity(i);
+                }
+                break;
+        }
     }
 
     @Override
