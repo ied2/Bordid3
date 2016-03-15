@@ -17,43 +17,63 @@
             android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/near_me"
             android:gravity="center"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/White"
+            android:textStyle="bold"
             android:text="Near me"
-            android:id="@+id/near_me"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/restaurantss"/>
+            android:background="@drawable/restaurant2"
+            android:shadowColor="@color/Black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25"/>
 
         <TextView
             android:gravity="center"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/White"
+            android:textStyle="bold"
             android:text="Surprise me"
             android:id="@+id/surprise"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/restaurant"/>
+            android:background="@drawable/restaurants2"
+            android:shadowColor="@color/Black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25"/>
 
         <TextView
             android:gravity="center"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/White"
+            android:textStyle="bold"
             android:text="Most Popular"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs"/>
+            android:background="@drawable/ribs2"
+            android:shadowColor="@color/Black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25"/>
 
         <TextView
             android:gravity="center"
             android:textSize="30dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/White"
+            android:textStyle="bold"
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs"/>
+            android:background="@drawable/dining"
+            android:shadowColor="@color/Black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25"/>
 
         </LinearLayout>
     </ScrollView>
