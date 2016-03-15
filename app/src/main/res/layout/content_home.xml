@@ -27,10 +27,7 @@
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:background="@drawable/restaurant2"
-            android:shadowColor="@color/Black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="25"/>
+            style="@style/TextShadow"/>
 
         <TextView
             android:gravity="center"
@@ -41,11 +38,8 @@
             android:id="@+id/surprise"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/restaurants2"
-            android:shadowColor="@color/Black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="25"/>
+            android:background="@drawable/ribs2"
+            style="@style/TextShadow"/>
 
         <TextView
             android:gravity="center"
@@ -56,10 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@drawable/ribs2"
-            android:shadowColor="@color/Black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="25"/>
+            style="@style/TextShadow"/>
 
         <TextView
             android:gravity="center"
@@ -70,10 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@drawable/dining"
-            android:shadowColor="@color/Black"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="25"/>
+            style="@style/TextShadow"/>
 
         </LinearLayout>
     </ScrollView>
