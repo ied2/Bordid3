@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class EditRestDialogFragment extends DialogFragment implements View.OnClickListener {
+public class RestaurantConfigureFragment extends DialogFragment implements View.OnClickListener {
 
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/EditRestaurant.php";
     public static final String UPLOAD_KEY = "restaurant";

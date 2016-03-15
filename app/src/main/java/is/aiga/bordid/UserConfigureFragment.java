@@ -1,8 +1,6 @@
 package is.aiga.bordid;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class MyDialogFragment extends DialogFragment {
+public class UserConfigureFragment extends DialogFragment {
 
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com//PhotoUpload/ConfigureUser.php";
     public static final String UPLOAD_KEY = "user";
@@ -29,7 +27,7 @@ public class MyDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_configure, container, false);
+        rootView = inflater.inflate(R.layout.fragment_user_configure, container, false);
         getDialog().setTitle("Configure");
 
         // Initialize few things

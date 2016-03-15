@@ -1,11 +1,6 @@
 package is.aiga.bordid;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,11 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,21 +65,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 // Start a dialog to configure the profile
             case R.id.profile_configure:
                 FragmentManager fm = getFragmentManager();
-                MyDialogFragment dialogFragment = new MyDialogFragment();
+                UserConfigureFragment dialogFragment = new UserConfigureFragment();
                 dialogFragment.show(fm, "Sample Fragment");
                 break;
 
                 // Start a dialog to configure the profile
             case R.id.profile_configure_restaurant:
                 FragmentManager fm2 = getFragmentManager();
-                EditRestDialogFragment dialogFragment2 = new EditRestDialogFragment();
+                RestaurantConfigureFragment dialogFragment2 = new RestaurantConfigureFragment();
                 dialogFragment2.show(fm2, "Sample Fragment");
                 break;
 
                 // Start a dialog to change profile image
             case R.id.profile_photo:
                 FragmentManager fm3 = getFragmentManager();
-                UploadImageDialogFragment dialogFragment3 = new UploadImageDialogFragment();
+                UploadPhotoFragment dialogFragment3 = new UploadPhotoFragment();
                 dialogFragment3.show(fm3, "Sample Fragment");
 
             default:

@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class UploadImageDialogFragment extends DialogFragment implements View.OnClickListener {
+public class UploadPhotoFragment extends DialogFragment implements View.OnClickListener {
 
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com/PhotoUpload/Upload.php";
     public static final String UPLOAD_KEY = "image";
