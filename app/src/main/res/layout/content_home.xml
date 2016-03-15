@@ -19,49 +19,37 @@
         <TextView
             android:id="@+id/near_me"
             android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="@color/White"
-            android:textStyle="bold"
             android:text="Near me"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:background="@drawable/restaurant2"
-            style="@style/TextShadow"/>
+            style="@style/TextStyle"/>
 
         <TextView
-            android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="@color/White"
-            android:textStyle="bold"
-            android:text="Surprise me"
             android:id="@+id/surprise"
+            android:gravity="center"
+            android:text="Surprise me"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs2"
-            style="@style/TextShadow"/>
+            android:background="@drawable/restaurants2"
+            style="@style/TextStyle"/>
 
         <TextView
             android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="@color/White"
-            android:textStyle="bold"
             android:text="Most Popular"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@drawable/ribs2"
-            style="@style/TextShadow"/>
+            style="@style/TextStyle"/>
 
         <TextView
             android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="@color/White"
-            android:textStyle="bold"
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@drawable/dining"
-            style="@style/TextShadow"/>
+            style="@style/TextStyle"/>
 
         </LinearLayout>
     </ScrollView>
