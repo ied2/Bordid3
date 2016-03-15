@@ -16,6 +16,9 @@ import java.util.Calendar;
 
 public class BookTableActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Reservation.php";
+    public static final String UPLOAD_KEY = "booking";
+
     private Button pickDate, increment, decrement, buttonBook;
     public static TextView date;
     public TextView numberOfSeats;
@@ -37,14 +40,14 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /** Get the current time */
+        // Get the current time
         final Calendar cal = Calendar.getInstance();
         pHour = cal.get(Calendar.HOUR_OF_DAY);
         pMinute = cal.get(Calendar.MINUTE);
 
         init();
 
-        /** Display the current time in the TextView */
+        // Display the current time in the TextView
         updateDisplay();
     }
 
@@ -117,12 +120,12 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
                         .append(pad(pMinute)));
     }
 
-    /** Displays a notification when the time is updated */
+    // Displays a notification when the time is updated
     private void displayToast() {
         Toast.makeText(this, new StringBuilder().append("Time choosen is ").append(displayTime.getText()),   Toast.LENGTH_SHORT).show();
     }
 
-    /** Add padding to numbers less than ten */
+    // Add padding to numbers less than ten
     private static String pad(int c) {
         if (c >= 10)
             return String.valueOf(c);
@@ -130,8 +133,7 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
             return "0" + String.valueOf(c);
     }
 
-    /** Create a new dialog for time picker */
-
+    // Create a new dialog for time picker
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
