@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+// Private data saved on phone
+// Username and restaurant information
 public class SaveSharedPreference {
 
     static final String PREF_USER_ID = "id";

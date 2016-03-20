@@ -35,6 +35,7 @@ public class NearMeActivity extends AppCompatActivity {
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Download all restaurants
         downloadRestaurants();
     }
 
@@ -84,9 +85,8 @@ public class NearMeActivity extends AppCompatActivity {
         gu.execute(GET_IMAGE_URL);
     }
 
+    // After receiving all data we extract information and put it in arrays
     public void init_restaurants(String jsonString) throws Exception {
-
-        Log.d("IED", jsonString);
 
         restaurants = (JSONArray)(new JSONTokener(jsonString).nextValue());
 
@@ -97,14 +97,13 @@ public class NearMeActivity extends AppCompatActivity {
             JSONObject item = (JSONObject) restaurants.get(i);
             String n = item.getString("RestName");
             String image = item.getString("RestImage");
-            Log.d("IED", n);
-            Log.d("IED", image);
             rName[i] = n;
             rImage[i] = image;
         }
         populate(rName, rImage);
     }
 
+    // Populate recycleView list with our restaurant names and images
     private void populate(final String[] rName, final String[] rImage) {
 
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);

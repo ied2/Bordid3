@@ -59,8 +59,9 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab:
 
+            // Click account button
+            case R.id.fab:
                 // Check if user is logged in
                 if (SaveSharedPreference.getUserName(HomeActivity.this).length() > 0) {
                     Intent pi = new Intent(HomeActivity.this, ProfileActivity.class);
@@ -72,13 +73,13 @@ public class HomeActivity extends AppCompatActivity
                 }
                 break;
 
-                 // Start activity to find restaurants near me
+            // Start activity to find restaurants near me
             case R.id.near_me:
                 Intent i = new Intent(HomeActivity.this, NearMeActivity.class);
                 startActivity(i);
                 break;
 
-                // Start activity to find a random restaurant
+            // Start activity to find a random restaurant
             case R.id.surprise:
                 Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
                 startActivity(i2);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/CreateUser.php";
     public static final String UPLOAD_KEY = "username";
 
-    private EditText mUsernameView, mPasswordView;
+    private EditText mUserNameView, mPasswordView;
     private UserCreateTask mAuthTask = null;
     private boolean CREATE_SUCCESSFUL;
 
@@ -32,7 +33,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mUsernameView = (EditText) findViewById(R.id.username_create);
+        mUserNameView = (EditText) findViewById(R.id.username_create);
         mPasswordView = (EditText) findViewById(R.id.password_create);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.create_account);
@@ -48,11 +49,53 @@ public class CreateAccountActivity extends AppCompatActivity {
     private void CreateAccount() {
 
         // Store values at the time of the login attempt.
-        String userName = mUsernameView.getText().toString();
+        String userName = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        mAuthTask = new UserCreateTask(userName, password);
-        mAuthTask.execute((Void) null);
+        // Reset errors.
+        mUserNameView.setError(null);
+        mPasswordView.setError(null);
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid userName.
+        if (TextUtils.isEmpty(userName)) {
+            mUserNameView.setError(getString(R.string.error_field_required));
+            focusView = mUserNameView;
+            cancel = true;
+        } else if (!isUsernameValid(userName)) {
+            mUserNameView.setError(getString(R.string.error_invalid_email));
+            focusView = mUserNameView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+//            showProgress(true);
+            mAuthTask = new UserCreateTask(userName, password);
+            mAuthTask.execute((Void) null);
+        }
+    }
+
+    private boolean isUsernameValid(String userName) {
+        return userName.length() > 3;
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() > 3;
     }
 
     public class UserCreateTask extends AsyncTask<Void, Void, String> {
@@ -84,7 +127,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final String success) {
             mAuthTask = null;
-            //showProgress(false);
+
+            if(success.equals("Username Already Exists")) {
+                Toast.makeText(CreateAccountActivity.this, success, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             String s = success.split(":")[0];
             String id = success.split(":")[1];
@@ -96,10 +143,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 Intent i = new Intent(CreateAccountActivity.this, ProfileActivity.class);
                 startActivity(i);
                 finish();
-            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-                Toast.makeText(CreateAccountActivity.this, success, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -109,8 +152,6 @@ public class CreateAccountActivity extends AppCompatActivity {
             //showProgress(false);
         }
     }
-
-
 
 
     @Override

@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        // Create Account activity if button is pressed
+        // Create Account activity
         Button createAccountButton = (Button) findViewById(R.id.login_create_account);
         createAccountButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -177,12 +177,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid userName address.
+        // Check for a valid userName.
         if (TextUtils.isEmpty(userName)) {
             mUserNameView.setError(getString(R.string.error_field_required));
             focusView = mUserNameView;
             cancel = true;
-        } else if (!isEmailValid(userName)) {
+        } else if (!isUsernameValid(userName)) {
             mUserNameView.setError(getString(R.string.error_invalid_email));
             focusView = mUserNameView;
             cancel = true;
@@ -201,15 +201,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-//        return email.contains("@");
-        return true;
+    private boolean isUsernameValid(String userName) {
+        return userName.length() > 3;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
+        return password.length() > 3;
     }
 
     /**
@@ -325,8 +322,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             data.put(UPLOAD_KEY, loginCode);
 
             String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
-
-            Log.d("IED", "result: " + result);
 
             return result;
         }

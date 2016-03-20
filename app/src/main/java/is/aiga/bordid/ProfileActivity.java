@@ -54,29 +54,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            // Logout
             case R.id.button_logout:
                 SaveSharedPreference.clearUser(this);
-                Log.d("IED", SaveSharedPreference.getUserId(this));
-                Log.d("IED", SaveSharedPreference.getRestaurantId(this));
-
                 finish();
                 break;
 
-                // Start a dialog to configure the profile
+            // Start a dialog to configure the profile
             case R.id.profile_configure:
                 FragmentManager fm = getFragmentManager();
                 UserConfigureFragment dialogFragment = new UserConfigureFragment();
                 dialogFragment.show(fm, "Sample Fragment");
                 break;
 
-                // Start a dialog to configure the profile
+            // Start a dialog to configure the profile
             case R.id.profile_configure_restaurant:
                 FragmentManager fm2 = getFragmentManager();
                 RestaurantConfigureFragment dialogFragment2 = new RestaurantConfigureFragment();
                 dialogFragment2.show(fm2, "Sample Fragment");
                 break;
 
-                // Start a dialog to change profile image
+            // Start a dialog to change profile image
             case R.id.profile_photo:
                 FragmentManager fm3 = getFragmentManager();
                 UploadPhotoFragment dialogFragment3 = new UploadPhotoFragment();
@@ -100,54 +99,3 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 }
-
-
-
-
-
-
-//        Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//            userName = extras.getString("username");
-//            Toast.makeText(ProfileActivity.this, "Logged in as: " + userName, Toast.LENGTH_LONG).show();
-//        }
-
-
-//// Get user information
-//public class UserInformation extends AsyncTask<Void, Void, String> {
-//
-//    private final String mUserName;
-//
-//    UserInformation(String username) {
-//        mUserName = username;
-//    }
-//
-//    @Override
-//    protected String doInBackground(Void... params) {
-//
-//        Service service = new Service(); // Service class is used to validate username and password
-//
-//        HashMap<String,String> data = new HashMap<>();
-//        data.put(UPLOAD_KEY, mUserName); // UPLOAD_KEY = "username", keyword for server POST request
-//
-//        String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
-//
-//        return result;
-//    }
-//
-//    @Override
-//    protected void onPostExecute(final String s) {
-//        Log.d("IED", "GetUser: " + s);
-//
-//        int i = Integer.parseInt(s.split(":")[0]);
-//        String n = s.split(":")[1];
-//        String e = s.split(":")[2];
-//        String p = s.split(":")[3];
-//
-//        id = i;
-//        name.setText(n);
-//        email.setText(e);
-//        phoneNumber.setText(p);
-//
-//    }
-//}
