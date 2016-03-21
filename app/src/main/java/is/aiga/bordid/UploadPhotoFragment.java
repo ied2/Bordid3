@@ -99,8 +99,8 @@ public class UploadPhotoFragment extends DialogFragment implements View.OnClickL
     private void uploadImage(){
         class UploadImage extends AsyncTask<Bitmap,Void,String> {
 
-            ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
+            private ProgressDialog loading;
+            private Service service = new Service();
 
             @Override
             protected void onPreExecute() {
@@ -127,7 +127,7 @@ public class UploadPhotoFragment extends DialogFragment implements View.OnClickL
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put(UPLOAD_KEY, uploadImage);
-                String result = rh.sendPostRequest(UPLOAD_URL,data); // Send the image to the database
+                String result = service.sendPostRequest(UPLOAD_URL,data); // Send the image to the database
                 return result;
             }
         }

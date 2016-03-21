@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Collections;
 import java.util.List;
 
+// This class creates every single item in our recycleView list
 public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> implements View.OnClickListener {
 
     private LayoutInflater inflater;

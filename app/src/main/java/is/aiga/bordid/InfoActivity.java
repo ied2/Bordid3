@@ -31,10 +31,12 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            // Check if user is logged in, if not, tell him to login
             case R.id.order_table:
                 if(SaveSharedPreference.getUserName(this).length() < 1){
                     Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
                 }
+                // else if the user is logged in we go to the booking activity
                 else {
                     Intent i = new Intent(this, BookTableActivity.class);
                     startActivity(i);

@@ -19,8 +19,6 @@ public class UserConfigureFragment extends DialogFragment {
     public static final String UPLOAD_KEY = "user";
     private ConfigureUser task;
 
-    private String result;
-
     private static EditText name, email, phoneNumber;
     private Button save, cancel;
     private View rootView;
@@ -99,7 +97,7 @@ public class UserConfigureFragment extends DialogFragment {
             HashMap<String,String> data = new HashMap<>();
             data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
 
-            result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+            String result = service.sendPostRequest(UPLOAD_URL, data);
 
             return result;
         }
