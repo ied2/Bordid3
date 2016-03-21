@@ -8,9 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class InfoActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+    public static TextView name, address, phoneNumber, distance, url, about;
+    public static RatingBar rating;
+    public Button buttonOrderTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +26,29 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // TextViews found
+        name = (TextView) findViewById(R.id.RestName);
+        address = (TextView) findViewById(R.id.RestAddress);
+        phoneNumber = (TextView) findViewById(R.id.RestPhone);
+        distance = (TextView) findViewById(R.id.RestDistance);
+        url = (TextView) findViewById(R.id.RestUrl);
+        about = (TextView) findViewById(R.id.aboutRest);
+
+        // Filling TextViews with user information
+        name.setText(SaveSharedPreference.getRestaurantName(this));
+        address.setText(SaveSharedPreference.getAddress(this));
+        phoneNumber.setText(SaveSharedPreference.getRestaurantPhoneNumber(this));
+        //distance.setText(SaveSharedPreference.getRestaurantDistance(this));
+        url.setText(SaveSharedPreference.getUrl(this));
+        //about.setText(SaveSharedPreference.getRestaurantDiscription(this));
+
+        // RatingView
+        rating = (RatingBar) findViewById(R.id.ratingBar);
+
+        // Buttons initialized
+        buttonOrderTable = (Button) findViewById(R.id.order_table);
+        buttonOrderTable.setOnClickListener(this);
 
         init();
     }
