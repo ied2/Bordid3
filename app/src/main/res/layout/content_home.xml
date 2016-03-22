@@ -60,7 +60,7 @@
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/dining"
+            android:background="@drawable/grill"
             style="@style/TextStyle"/>
 
         </LinearLayout>
