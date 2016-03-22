@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/restaurant2"
+            android:background="@drawable/restaurant3"
             style="@style/TextStyle"/>
 
         <TextView
@@ -38,7 +38,7 @@
             android:id="@+id/surprise"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs2"
+            android:background="@drawable/ribs3"
             style="@style/TextStyle"/>
 
         <TextView
@@ -49,7 +49,7 @@
             android:text="Most Popular"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs2"
+            android:background="@drawable/restaurants3"
             style="@style/TextStyle"/>
 
         <TextView
@@ -60,7 +60,7 @@
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/grill"
+            android:background="@drawable/dining2"
             style="@style/TextStyle"/>
 
         </LinearLayout>
