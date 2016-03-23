@@ -7,8 +7,9 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/RestImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:src="@drawable/grill"
         android:adjustViewBounds="true"/>
     <LinearLayout
@@ -72,7 +73,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/Face"
+                        android:drawableLeft="@mipmap/face"
                         android:textSize="20sp"
                         android:text="551 12345"/>
 
@@ -99,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@mipmap/Face"
+                        android:drawableLeft="@mipmap/face"
                         android:textSize="20sp"
                         android:text="Website"/>
                 </LinearLayout>
@@ -117,15 +118,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="20sp"
-                        android:text="About"/>
+                        android:text="Grillmarkaðurinn er veitingastaður í hjarta borgarinnar. Grillhúsið býður upp á allt það elsta sem veitingastaðir í dag hafa upp á að bjóða."/>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/aboutRest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Grillmarkaðurinn er veitingastaður í hjarta borgarinnar. Grillhúsið býður upp á allt það elsta sem veitingastaðir í dag hafa upp á að bjóða."/>
 
                 <Button
                     android:id="@+id/order_table"
