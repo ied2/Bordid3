@@ -32,10 +32,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        // Check if user is logged in, if so display the user name on screen
-        if(SaveSharedPreference.getUserName(this).length() > 0) {
-            Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_LONG).show();
-        }
+        isLoggedIn();
 
         initialize();
     }
@@ -54,6 +51,13 @@ public class HomeActivity extends AppCompatActivity
 
         TextView surprise = (TextView)findViewById(R.id.surprise);
         surprise.setOnClickListener(this);
+    }
+
+    // Check if user is logged in, if so display the user name on screen
+    private void isLoggedIn() {
+        if(SaveSharedPreference.getUserName(this).length() > 0) {
+            Toast.makeText(HomeActivity.this, "Logged in as: " + SaveSharedPreference.getUserName(this), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
