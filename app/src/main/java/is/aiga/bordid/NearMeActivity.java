@@ -118,7 +118,7 @@ public class NearMeActivity extends AppCompatActivity {
         populate(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
     }
 
-    // Populate recycleView list with our restaurant names and images
+    // Populate recycleView list with our restaurants names and images
     private void populate(final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
 
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
