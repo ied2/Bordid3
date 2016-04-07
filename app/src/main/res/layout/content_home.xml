@@ -29,6 +29,11 @@
             android:background="@drawable/restaurant2"
             style="@style/TextStyle"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
+
         <TextView
             android:gravity="center"
             android:textSize="30dp"
@@ -41,6 +46,11 @@
             android:background="@drawable/ribs2"
             style="@style/TextStyle"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
+
         <TextView
             android:gravity="center"
             android:textSize="30dp"
@@ -51,6 +61,11 @@
             android:layout_height="200dp"
             android:background="@drawable/restaurants2"
             style="@style/TextStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
 
         <TextView
             android:gravity="center"
