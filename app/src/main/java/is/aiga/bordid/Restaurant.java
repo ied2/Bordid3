@@ -1,8 +1,5 @@
 package is.aiga.bordid;
 
-/**
- * Created by Tasteless on 25.2.2016.
- */
 public class Restaurant {
 
     private String name;
@@ -13,6 +10,34 @@ public class Restaurant {
     private int numTables;
     private RestaurantType types;
     private Location location;
+    private String phoneNumber;
+    private String website;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private String description;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     public String getName() {
         return name;

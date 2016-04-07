@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ import java.util.List;
 public class NearMeActivity extends AppCompatActivity {
 
     public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private VAdapter adapter;
     public static JSONArray restaurants = null; // Array of restaurants
 
@@ -90,35 +91,53 @@ public class NearMeActivity extends AppCompatActivity {
 
         restaurants = (JSONArray)(new JSONTokener(jsonString).nextValue());
 
+        Log.d("IED", jsonString);
+
         String[] rName = new String[restaurants.length()];
         String[] rImage = new String[restaurants.length()];
+        String[] rphoneNumber = new String[restaurants.length()];
+        String[] raddress = new String[restaurants.length()];
+        String[] rwebsite = new String[restaurants.length()];
+        String[] rDescription = new String[restaurants.length()];
 
         for(int i=0; i<restaurants.length(); i++) {
             JSONObject item = (JSONObject) restaurants.get(i);
             String n = item.getString("RestName");
-            String image = item.getString("RestImage");
+            String im = item.getString("RestImage");
+            String p = item.getString("RestPhoneNumber");
+            String a = item.getString("RestAddress");
+            String w = item.getString("RestWebsite");
+            String d = item.getString("RestDescription");
             rName[i] = n;
-            rImage[i] = image;
+            rImage[i] = im;
+            rphoneNumber[i] = p;
+            raddress[i] = a;
+            rwebsite[i] = w;
+            rDescription[i] = d;
         }
-        populate(rName, rImage);
+        populate(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
     }
 
     // Populate recycleView list with our restaurant names and images
-    private void populate(final String[] rName, final String[] rImage) {
+    private void populate(final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
 
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
-        adapter = new VAdapter(this, getData(rName, rImage));
+        adapter = new VAdapter(this, getData(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public static List<Information> getData(String[] rName, String[] rImage) {
-        List<Information> data = new ArrayList<>();
+    public static List<Restaurant> getData(String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription) {
+        List<Restaurant> data = new ArrayList<>();
 
         for(int i = 0; i < rName.length; i++) {
-            Information current = new Information();
-            current.rName = rName[i];
-            current.rImage = rImage[i];
+            Restaurant current = new Restaurant();
+            current.setName(rName[i]);
+            current.setLogo(rImage[i]);
+            current.setPhoneNumber(rphoneNumber[i]);
+            current.setAddress(raddress[i]);
+            current.setWebsite(rwebsite[i]);
+            current.setDescription(rDescription[i]);
             data.add(current);
         }
         return data;
