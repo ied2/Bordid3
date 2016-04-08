@@ -19,7 +19,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/CreateUser.php";
     public static final String UPLOAD_KEY = "username";
 
-    private EditText mUserNameView, mPasswordView;
+    private EditText mUserNameView, mPasswordView, mFullName, mRestaurantName, mPhoneNumber, mEmail;
     private UserCreateTask mAuthTask = null;
     private boolean CREATE_SUCCESSFUL;
 
@@ -35,6 +35,11 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         mUserNameView = (EditText) findViewById(R.id.username_create);
         mPasswordView = (EditText) findViewById(R.id.password_create);
+        mFullName = (EditText) findViewById(R.id.full_name);
+        mRestaurantName = (EditText) findViewById(R.id.restaurant_name);
+        mPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
+        mEmail = (EditText) findViewById(R.id.email);
+
 
         Button mEmailSignInButton = (Button) findViewById(R.id.create_account);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +56,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String userName = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String fullName = mFullName.getText().toString();
+        String restaurantName = mRestaurantName.getText().toString();
+        String phoneNumber = mPhoneNumber.getText().toString();
+        String email = mEmail.getText().toString();
 
         // Reset errors.
         mUserNameView.setError(null);
@@ -85,7 +94,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 //            showProgress(true);
-            mAuthTask = new UserCreateTask(userName, password);
+            mAuthTask = new UserCreateTask(userName, password, fullName, restaurantName, phoneNumber, email);
             mAuthTask.execute((Void) null);
         }
     }
@@ -102,11 +111,20 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         private final String mUserName;
         private final String mPassword;
+        private final String mFullName;
+        private final String mRestaurantName;
+        private final String mPhoneNumber;
+        private final String mEmail;
 
-        UserCreateTask(String email, String password) {
+        UserCreateTask(String userName, String password, String fullName, String restaurantName, String phoneNumber, String email) {
+            this.mUserName = userName;
+            this.mPassword = password;
+            this.mFullName = fullName;
+            this.mRestaurantName = restaurantName;
+            this.mPhoneNumber = phoneNumber;
+            this.mEmail = email;
             CREATE_SUCCESSFUL = false;
-            mUserName = email;
-            mPassword = password;
+
         }
 
         @Override
@@ -114,7 +132,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String loginCode = mUserName + ":" + mPassword;
+            String loginCode = mUserName + ":" + mPassword + ":" + mFullName + ":" + mRestaurantName + ":" + mPhoneNumber + ":" + mEmail;
             HashMap<String,String> data = new HashMap<>();
             data.put(UPLOAD_KEY, loginCode); // UPLOAD_KEY = "username", keyword for server POST request
 

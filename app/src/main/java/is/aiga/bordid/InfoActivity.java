@@ -2,22 +2,24 @@ package is.aiga.bordid;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 public class InfoActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    public static TextView name, address, phoneNumber, distance, url, about;
+    public static TextView name, address, phoneNumber, distance, url, description;
     public static RatingBar rating;
     public Button buttonOrderTable;
+    public ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +31,11 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
 
         // TextViews found
         name = (TextView) findViewById(R.id.RestName);
-        address = (TextView) findViewById(R.id.RestAddress);
         phoneNumber = (TextView) findViewById(R.id.RestPhone);
-        distance = (TextView) findViewById(R.id.RestDistance);
         url = (TextView) findViewById(R.id.RestUrl);
-        about = (TextView) findViewById(R.id.aboutRest);
-
-        // Filling TextViews with user information
-        name.setText(SaveSharedPreference.getRestaurantName(this));
-        address.setText(SaveSharedPreference.getAddress(this));
-        phoneNumber.setText(SaveSharedPreference.getRestaurantPhoneNumber(this));
-        //distance.setText(SaveSharedPreference.getRestaurantDistance(this));
-        url.setText(SaveSharedPreference.getUrl(this));
-        //about.setText(SaveSharedPreference.getRestaurantDiscription(this));
+        description = (TextView) findViewById(R.id.About);
+        address = (TextView) findViewById(R.id.RestAddress);
+        image = (ImageView) findViewById(R.id.RestImage);
 
         // RatingView
         rating = (RatingBar) findViewById(R.id.ratingBar);
@@ -54,8 +48,24 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
-        Button button = (Button)findViewById(R.id.order_table);
+        Button button = (Button) findViewById(R.id.order_table);
         button.setOnClickListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+            String logo = extras.getString("logo");
+
+            // Filling TextViews with user information
+            name.setText(extras.getString("name"));
+            address.setText(extras.getString("address"));
+            phoneNumber.setText(extras.getString("phoneNumber"));
+            url.setText(extras.getString("url"));
+            description.setText(extras.getString("description"));
+
+            if (logo.equals("999")) Picasso.with(this).load(R.drawable.upload_image).fit().into(image);
+            else Picasso.with(this).load(logo).fit().into(image);
+        }
     }
 
     @Override
@@ -63,15 +73,19 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()) {
             // Check if user is logged in, if not, tell him to login
             case R.id.order_table:
-                if(SaveSharedPreference.getUserName(this).length() < 1){
-                    Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
-                }
-                // else if the user is logged in we go to the booking activity
-                else {
-                    Intent i = new Intent(this, BookTableActivity.class);
-                    startActivity(i);
-                }
+                orderTable();
                 break;
+        }
+    }
+
+    private void orderTable() {
+        if(SaveSharedPreference.getUserName(this).length() < 1){
+            Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
+        }
+        // else if the user is logged in we go to the booking activity
+        else {
+            Intent i = new Intent(this, BookTableActivity.class);
+            startActivity(i);
         }
     }
 

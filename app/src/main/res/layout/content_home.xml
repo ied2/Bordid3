@@ -26,8 +26,13 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/restaurant3"
+            android:background="@drawable/restaurant2"
             style="@style/TextStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
 
         <TextView
             android:gravity="center"
@@ -38,8 +43,13 @@
             android:id="@+id/surprise"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs3"
+            android:background="@drawable/ribs2"
             style="@style/TextStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
 
         <TextView
             android:gravity="center"
@@ -49,8 +59,13 @@
             android:text="Most Popular"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/restaurants3"
+            android:background="@drawable/restaurants2"
             style="@style/TextStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#030303"/>
 
         <TextView
             android:gravity="center"
