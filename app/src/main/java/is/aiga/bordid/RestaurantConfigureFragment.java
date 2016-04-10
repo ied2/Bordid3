@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class RestaurantConfigureFragment extends DialogFragment implements View.OnClickListener {
 
     public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/EditRestaurant.php";
-    public static final String UPLOAD_KEY = "restaurant";
+    public static final String UPLOAD_KEY = "restaurants";
     private ConfigureRestaurant task;
 
     private String result;
@@ -105,7 +105,7 @@ public class RestaurantConfigureFragment extends DialogFragment implements View.
         }
     }
 
-    // Update user's restaurant information
+    // Update user's restaurants information
     public class ConfigureRestaurant extends AsyncTask<Void, Void, String> {
 
         private String cname, cemail, caddress, czip, ccity, cphoneNumber, cnumSeats, curl, clatitude, clongitude;
@@ -135,7 +135,7 @@ public class RestaurantConfigureFragment extends DialogFragment implements View.
             Log.d("IED", "updateString" +  updateString);
 
             HashMap<String,String> data = new HashMap<>();
-            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "restaurant", keyword for server POST request
+            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "restaurants", keyword for server POST request
 
             result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
 

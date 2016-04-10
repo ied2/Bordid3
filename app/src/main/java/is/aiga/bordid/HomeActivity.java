@@ -1,8 +1,13 @@
 package is.aiga.bordid;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,35 +18,56 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements View.OnClickListener {
+
+    public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
+    public List<Restaurant> restaurants;
+    private Random randomGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.app_bar_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        restaurants = new ArrayList<>();
+        randomGenerator = new Random();
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
 
         isLoggedIn();
 
         initialize();
+
+        downloadRestaurants();
     }
 
     private void initialize() {
 
         // Setup up click listeners
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         FloatingActionButton account = (FloatingActionButton) findViewById(R.id.fab);
         account.setOnClickListener(this);
@@ -51,6 +77,78 @@ public class HomeActivity extends AppCompatActivity
 
         TextView surprise = (TextView)findViewById(R.id.surprise);
         surprise.setOnClickListener(this);
+    }
+
+    private void downloadRestaurants() {
+        class GetURLs extends AsyncTask<String,Void,String> {
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(HomeActivity.this,"Loading...","Please Wait...",true,true);
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                loading.dismiss();
+                try {
+                    populate_restaurant(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected String doInBackground(String... strings) {
+                BufferedReader bufferedReader = null;
+                try {
+                    URL url = new URL(strings[0]);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    StringBuilder sb = new StringBuilder();
+
+                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    String json;
+                    while((json = bufferedReader.readLine())!= null){
+                        sb.append(json+"\n");
+                    }
+                    return sb.toString().trim();
+
+                }catch(Exception e){
+                    return null;
+                }
+            }
+        }
+        GetURLs gu = new GetURLs();
+        gu.execute(GET_IMAGE_URL);
+    }
+
+    // After receiving all data we extract information and put it in arrays
+    public void populate_restaurant(String jsonString) throws Exception {
+
+        JSONArray jsonRestaurants = (JSONArray)(new JSONTokener(jsonString).nextValue());
+
+        Log.d("IED", jsonString);
+
+        for(int i=0; i<jsonRestaurants.length(); i++) {
+            Restaurant rest = new Restaurant();
+            JSONObject item = (JSONObject) jsonRestaurants.get(i);
+            String n = item.getString("RestName");
+            rest.setName(n);
+            String im = item.getString("RestImage");
+            rest.setLogo(im);
+            String p = item.getString("RestPhoneNumber");
+            rest.setPhoneNumber(p);
+            String a = item.getString("RestAddress");
+            rest.setAddress(a);
+            String w = item.getString("RestWebsite");
+            rest.setWebsite(w);
+            String d = item.getString("RestDescription");
+            rest.setDescription(d);
+            restaurants.add(rest);
+        }
     }
 
     // Check if user is logged in, if so display the user name on screen
@@ -83,12 +181,30 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(i);
                 break;
 
-            // Start activity to find a random restaurant
+            // Start activity to find a random restaurants
             case R.id.surprise:
-                Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
-                startActivity(i2);
+                surpriseMe();
                 break;
         }
+    }
+
+    private void surpriseMe() {
+        int index = randomGenerator.nextInt(restaurants.size());
+        Restaurant rest = restaurants.get(index);
+        Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
+        i2.putExtra("name", rest.getName());
+        i2.putExtra("logo", rest.getLogo());
+        i2.putExtra("phoneNumber", rest.getPhoneNumber());
+        i2.putExtra("address", rest.getAddress());
+        i2.putExtra("website", rest.getWebsite());
+        i2.putExtra("description", rest.getDescription());
+        startActivity(i2);
+    }
+
+    public Restaurant randomItem()
+    {
+        int index = randomGenerator.nextInt(restaurants.size());
+        return restaurants.get(index);
     }
 
     @Override
@@ -116,28 +232,28 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 }
