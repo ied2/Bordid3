@@ -28,6 +28,12 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
         this.data = data;
     }
 
+
+    public void update(List<Restaurant> data) {
+        this.data = data;
+    }
+
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
