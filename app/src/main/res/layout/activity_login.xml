@@ -80,8 +80,14 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/create_account"
                 android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/logo_img"
+                android:src="@drawable/logo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:layout_margin="20dp"/>
 
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>
