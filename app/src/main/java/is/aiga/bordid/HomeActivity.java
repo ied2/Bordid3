@@ -1,24 +1,15 @@
 package is.aiga.bordid;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +29,8 @@ public class HomeActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
-    public List<Restaurant> restaurants;
-    private Random randomGenerator;
+    public static List<Restaurant> restaurants = new ArrayList<>();
+    private Random randomGenerator = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,27 +39,14 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        restaurants = new ArrayList<>();
-        randomGenerator = new Random();
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
+        downloadRestaurants();
 
         isLoggedIn();
 
         initialize();
-
-        downloadRestaurants();
     }
 
     private void initialize() {
-
-        // Setup up click listeners
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-
         FloatingActionButton account = (FloatingActionButton) findViewById(R.id.fab);
         account.setOnClickListener(this);
 
@@ -81,18 +59,15 @@ public class HomeActivity extends AppCompatActivity
 
     private void downloadRestaurants() {
         class GetURLs extends AsyncTask<String,Void,String> {
-            ProgressDialog loading;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(HomeActivity.this,"Loading...","Please Wait...",true,true);
             }
 
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
-                loading.dismiss();
                 try {
                     populate_restaurant(result);
                 } catch (Exception e) {
@@ -129,8 +104,6 @@ public class HomeActivity extends AppCompatActivity
     public void populate_restaurant(String jsonString) throws Exception {
 
         JSONArray jsonRestaurants = (JSONArray)(new JSONTokener(jsonString).nextValue());
-
-        Log.d("IED", jsonString);
 
         for(int i=0; i<jsonRestaurants.length(); i++) {
             Restaurant rest = new Restaurant();
@@ -189,22 +162,18 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void surpriseMe() {
-        int index = randomGenerator.nextInt(restaurants.size());
-        Restaurant rest = restaurants.get(index);
-        Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
-        i2.putExtra("name", rest.getName());
-        i2.putExtra("logo", rest.getLogo());
-        i2.putExtra("phoneNumber", rest.getPhoneNumber());
-        i2.putExtra("address", rest.getAddress());
-        i2.putExtra("website", rest.getWebsite());
-        i2.putExtra("description", rest.getDescription());
-        startActivity(i2);
-    }
-
-    public Restaurant randomItem()
-    {
-        int index = randomGenerator.nextInt(restaurants.size());
-        return restaurants.get(index);
+        if(restaurants.size() > 0) {
+            int index = randomGenerator.nextInt(restaurants.size());
+            Restaurant rest = restaurants.get(index);
+            Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
+            i2.putExtra("name", rest.getName());
+            i2.putExtra("logo", rest.getLogo());
+            i2.putExtra("phoneNumber", rest.getPhoneNumber());
+            i2.putExtra("address", rest.getAddress());
+            i2.putExtra("website", rest.getWebsite());
+            i2.putExtra("description", rest.getDescription());
+            startActivity(i2);
+        }
     }
 
     @Override
@@ -231,29 +200,4 @@ public class HomeActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
 }
