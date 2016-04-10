@@ -79,10 +79,13 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void orderTable() {
+        // If user is not logged in, we start Login Activity
         if(SaveSharedPreference.getUserName(this).length() < 1){
             Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
         }
-        // else if the user is logged in we go to the booking activity
+        // If the user is logged in we go to the booking activity
         else {
             Intent i = new Intent(this, BookTableActivity.class);
             startActivity(i);

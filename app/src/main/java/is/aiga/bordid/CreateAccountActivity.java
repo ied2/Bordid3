@@ -158,6 +158,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 Toast.makeText(CreateAccountActivity.this, s, Toast.LENGTH_SHORT).show();
                 SaveSharedPreference.setUserId(CreateAccountActivity.this, id);
                 SaveSharedPreference.setUserName(CreateAccountActivity.this, mUserName);
+                SaveSharedPreference.setName(CreateAccountActivity.this, mFullName);
+                SaveSharedPreference.setRestaurantName(CreateAccountActivity.this, mRestaurantName);
+                SaveSharedPreference.setPhoneNumber(CreateAccountActivity.this, mPhoneNumber);
+                SaveSharedPreference.setEmail(CreateAccountActivity.this, mEmail);
                 Intent i = new Intent(CreateAccountActivity.this, ProfileActivity.class);
                 startActivity(i);
                 finish();
