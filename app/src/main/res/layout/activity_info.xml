@@ -1,32 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/RestImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:src="@drawable/grill"
         android:adjustViewBounds="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/aboutRest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Grillmarkaðurinn er veitingastaður í hjarta borgarinnar.
-        Grillhúsið býður upp á allt það elsta sem veitingastaðir í dag hafa upp á að bjóða."/>
+        <TextView
+            android:id="@+id/RestName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:text="Grillmarkaðurinn"/>
 
-    <Button
-        android:id="@+id/order_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#ff0000"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="Panta Borð"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        android:rating="4.2"/>
+
+                    <TextView
+                        android:id="@+id/RestAddress"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:layout_gravity="bottom|right"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="Austurstræti"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/RestPhone"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:text="551 12345"/>
+                    <!--android:drawableLeft="@mipmap/face"-->
+
+
+                    <TextView
+                        android:id="@+id/RestDistance"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_gravity="right"
+                        android:text="1.2 km"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/RestUrl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="Website"/>
+                </LinearLayout>
+                <!--android:drawableLeft="@mipmap/face"-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/About"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="Grillmarkaðurinn er veitingastaður í hjarta borgarinnar. Grillhúsið býður upp á allt það elsta sem veitingastaðir í dag hafa upp á að bjóða."/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/order_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:text="Panta Borð"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

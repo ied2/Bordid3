@@ -57,8 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             // Logout
             case R.id.button_logout:
-                SaveSharedPreference.clearUser(this);
-                finish();
+                logout();
                 break;
 
             // Start a dialog to configure the profile
@@ -84,6 +83,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             default:
                 break;
         }
+    }
+
+    private void logout() {
+        SaveSharedPreference.clearUser(this);
+        finish();
     }
 
     @Override

@@ -29,6 +29,9 @@
             android:background="@drawable/restaurant2"
             style="@style/TextStyle"/>
 
+            <View
+                style="@style/ViewStyle"/>
+
         <TextView
             android:gravity="center"
             android:textSize="30dp"
@@ -41,6 +44,9 @@
             android:background="@drawable/ribs2"
             style="@style/TextStyle"/>
 
+            <View
+                style="@style/ViewStyle"/>
+
         <TextView
             android:gravity="center"
             android:textSize="30dp"
@@ -49,8 +55,11 @@
             android:text="Most Popular"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/ribs2"
+            android:background="@drawable/restaurants2"
             style="@style/TextStyle"/>
+
+            <View
+                style="@style/ViewStyle"/>
 
         <TextView
             android:gravity="center"
@@ -60,7 +69,7 @@
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/dining"
+            android:background="@drawable/dining2"
             style="@style/TextStyle"/>
 
         </LinearLayout>

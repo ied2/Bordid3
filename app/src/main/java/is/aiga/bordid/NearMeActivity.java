@@ -3,11 +3,19 @@ package is.aiga.bordid;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,15 +31,23 @@ import java.util.List;
 public class NearMeActivity extends AppCompatActivity {
 
     public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private VAdapter adapter;
     public static JSONArray restaurants = null; // Array of restaurants
+    private static List<Restaurant> mRestaurants;
+    private static List<Restaurant> mFilteredRestaurants;
+    private String mSearchQuery;
+    private EditText mSearchEt;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listview_restaurant);
+        //setContentView(R.layout.listview_restaurant);
+        setContentView(R.layout.app_bar_nearme);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.nearme_toolbar);
 
+        setSupportActionBar(toolbar);
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -90,38 +106,62 @@ public class NearMeActivity extends AppCompatActivity {
 
         restaurants = (JSONArray)(new JSONTokener(jsonString).nextValue());
 
+        Log.d("IED", jsonString);
+
         String[] rName = new String[restaurants.length()];
         String[] rImage = new String[restaurants.length()];
+        String[] rphoneNumber = new String[restaurants.length()];
+        String[] raddress = new String[restaurants.length()];
+        String[] rwebsite = new String[restaurants.length()];
+        String[] rDescription = new String[restaurants.length()];
 
         for(int i=0; i<restaurants.length(); i++) {
             JSONObject item = (JSONObject) restaurants.get(i);
             String n = item.getString("RestName");
-            String image = item.getString("RestImage");
+            String im = item.getString("RestImage");
+            String p = item.getString("RestPhoneNumber");
+            String a = item.getString("RestAddress");
+            String w = item.getString("RestWebsite");
+            String d = item.getString("RestDescription");
             rName[i] = n;
-            rImage[i] = image;
+            rImage[i] = im;
+            rphoneNumber[i] = p;
+            raddress[i] = a;
+            rwebsite[i] = w;
+            rDescription[i] = d;
         }
-        populate(rName, rImage);
+        populate(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
     }
 
-    // Populate recycleView list with our restaurant names and images
-    private void populate(final String[] rName, final String[] rImage) {
-
+    // Populate recycleView list with our restaurants names and images
+    private void populate(final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
+        Log.d("IED", "4");
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
-        adapter = new VAdapter(this, getData(rName, rImage));
+        adapter = new VAdapter(this, getData(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mSearchQuery = "";
+        initSearchBar(mSearchQuery);
     }
 
-    public static List<Information> getData(String[] rName, String[] rImage) {
-        List<Information> data = new ArrayList<>();
+    public static List<Restaurant> getData(String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription) {
+        mRestaurants = new ArrayList<>();
 
         for(int i = 0; i < rName.length; i++) {
-            Information current = new Information();
-            current.rName = rName[i];
-            current.rImage = rImage[i];
-            data.add(current);
+            Restaurant current = new Restaurant();
+            current.setName(rName[i]);
+            current.setLogo(rImage[i]);
+            current.setPhoneNumber(rphoneNumber[i]);
+            current.setAddress(raddress[i]);
+            current.setWebsite(rwebsite[i]);
+            current.setDescription(rDescription[i]);
+            mRestaurants.add(current);
         }
-        return data;
+
+        mFilteredRestaurants = mRestaurants;
+
+        return mRestaurants;
     }
 
     @Override
@@ -135,5 +175,84 @@ public class NearMeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void initSearchBar(String queryText) {
+        // Search edit text field setup.
+        Log.d("IED", "5");
+        mSearchEt = (EditText) findViewById(R.id.etSearch);
+        mSearchEt.addTextChangedListener(new SearchWatcher());
+        mSearchEt.setText(queryText);
+
+        // Change search icon accordingly.
+//        mSearchAction.setIcon(mIconCloseSearch);          // set the close icon
+    }
+
+    /**
+     * Responsible for handling changes in search edit text.
+     */
+    private class SearchWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence c, int i, int i2, int i3) {
+            mSearchQuery = mSearchEt.getText().toString();
+            mFilteredRestaurants = performSearch(mRestaurants, mSearchQuery);
+
+            // Updates the list
+            adapter.update(mFilteredRestaurants);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    }
+
+    /**
+     * Goes through the given list and filters it according to the given query.
+     */
+    private List<Restaurant> performSearch(List<Restaurant> restaurants, String query) {
+        // First we split the query so that we're able
+        // to search word by word (in lower case).
+        String[] queryByWords = query.toLowerCase().split("\\s+");
+
+        // Empty list to fill with matches.
+        List<Restaurant> restaurantsFiltered = new ArrayList<Restaurant>();
+
+        // Go through initial releases and perform search.
+        for (Restaurant movie : mRestaurants) {
+
+            // Content to search through (in lower case).
+            String content = (
+                    movie.getName() + " " +
+                            movie.getAddress() + " " +
+                            String.valueOf(movie.getDescription())
+            ).toLowerCase();
+
+            for (String word : queryByWords) {
+
+                // There is a match only if all of the words are contained.
+                int numberOfMatches = queryByWords.length;
+
+                // All query words have to be contained,
+                // otherwise the release is filtered out.
+                if (content.contains(word)) {
+                    numberOfMatches--;
+                } else {
+                    break;
+                }
+
+                // They all match.
+                if (numberOfMatches == 0) {
+                    restaurantsFiltered.add(movie);
+                }
+            }
+        }
+
+        return restaurantsFiltered;
     }
 }
