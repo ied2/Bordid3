@@ -68,6 +68,7 @@ public class NearMeActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
+                Log.d("IED", result);
                 loading.dismiss();
                 try {
                     init_restaurants(result);
