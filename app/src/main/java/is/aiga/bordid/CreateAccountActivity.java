@@ -16,12 +16,11 @@ import java.util.HashMap;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/CreateUser.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/CreateCustomer.php";
     public static final String UPLOAD_KEY = "username";
 
-    private EditText mUserNameView, mPasswordView, mFullName, mRestaurantName, mPhoneNumber, mEmail;
+    private EditText mUserNameView, mPasswordView, mFullName, mPhoneNumber, mEmail;
     private UserCreateTask mAuthTask = null;
-    private boolean CREATE_SUCCESSFUL;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         mUserNameView = (EditText) findViewById(R.id.username_create);
         mPasswordView = (EditText) findViewById(R.id.password_create);
         mFullName = (EditText) findViewById(R.id.full_name);
-        mRestaurantName = (EditText) findViewById(R.id.restaurant_name);
         mPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
         mEmail = (EditText) findViewById(R.id.email);
 
@@ -46,7 +44,6 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CreateAccount();
-                //Toast.makeText(CreateAccountActivity.this, "Account to be created :)", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -57,7 +54,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         String userName = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
         String fullName = mFullName.getText().toString();
-        String restaurantName = mRestaurantName.getText().toString();
         String phoneNumber = mPhoneNumber.getText().toString();
         String email = mEmail.getText().toString();
 
@@ -94,7 +90,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 //            showProgress(true);
-            mAuthTask = new UserCreateTask(userName, password, fullName, restaurantName, phoneNumber, email);
+            mAuthTask = new UserCreateTask(userName, password, fullName, phoneNumber, email);
             mAuthTask.execute((Void) null);
         }
     }
@@ -112,19 +108,15 @@ public class CreateAccountActivity extends AppCompatActivity {
         private final String mUserName;
         private final String mPassword;
         private final String mFullName;
-        private final String mRestaurantName;
         private final String mPhoneNumber;
         private final String mEmail;
 
-        UserCreateTask(String userName, String password, String fullName, String restaurantName, String phoneNumber, String email) {
+        UserCreateTask(String userName, String password, String fullName, String phoneNumber, String email) {
             this.mUserName = userName;
             this.mPassword = password;
             this.mFullName = fullName;
-            this.mRestaurantName = restaurantName;
             this.mPhoneNumber = phoneNumber;
             this.mEmail = email;
-            CREATE_SUCCESSFUL = false;
-
         }
 
         @Override
@@ -132,12 +124,11 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String loginCode = mUserName + ":" + mPassword + ":" + mFullName + ":" + mRestaurantName + ":" + mPhoneNumber + ":" + mEmail;
+            String loginCode = mUserName + ":" + mPassword + ":" + mFullName + ":" + mPhoneNumber + ":" + mEmail;
             HashMap<String,String> data = new HashMap<>();
             data.put(UPLOAD_KEY, loginCode); // UPLOAD_KEY = "username", keyword for server POST request
 
             String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
-            Log.d("IED", result);
 
             return result;
         }
@@ -152,14 +143,14 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
 
             String s = success.split(":")[0];
-            String id = success.split(":")[1];
+            String custId = success.split(":")[1];
+
 
             if (s.equals("Account Created")) {
                 Toast.makeText(CreateAccountActivity.this, s, Toast.LENGTH_SHORT).show();
-                SaveSharedPreference.setUserId(CreateAccountActivity.this, id);
+                SaveSharedPreference.setUserId(CreateAccountActivity.this, custId);
                 SaveSharedPreference.setUserName(CreateAccountActivity.this, mUserName);
                 SaveSharedPreference.setName(CreateAccountActivity.this, mFullName);
-                SaveSharedPreference.setRestaurantName(CreateAccountActivity.this, mRestaurantName);
                 SaveSharedPreference.setPhoneNumber(CreateAccountActivity.this, mPhoneNumber);
                 SaveSharedPreference.setEmail(CreateAccountActivity.this, mEmail);
                 Intent i = new Intent(CreateAccountActivity.this, ProfileActivity.class);
@@ -171,10 +162,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            //showProgress(false);
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

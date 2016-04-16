@@ -108,6 +108,7 @@ public class NearMeActivity extends AppCompatActivity {
 
         Log.d("IED", jsonString);
 
+        String[] rId = new String[restaurants.length()];
         String[] rName = new String[restaurants.length()];
         String[] rImage = new String[restaurants.length()];
         String[] rphoneNumber = new String[restaurants.length()];
@@ -117,12 +118,14 @@ public class NearMeActivity extends AppCompatActivity {
 
         for(int i=0; i<restaurants.length(); i++) {
             JSONObject item = (JSONObject) restaurants.get(i);
+            String r = item.getString("RestaurantId");
             String n = item.getString("RestName");
             String im = item.getString("RestImage");
             String p = item.getString("RestPhoneNumber");
             String a = item.getString("RestAddress");
             String w = item.getString("RestWebsite");
             String d = item.getString("RestDescription");
+            rId[i] = r;
             rName[i] = n;
             rImage[i] = im;
             rphoneNumber[i] = p;
@@ -130,14 +133,14 @@ public class NearMeActivity extends AppCompatActivity {
             rwebsite[i] = w;
             rDescription[i] = d;
         }
-        populate(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
+        populate(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
     }
 
     // Populate recycleView list with our restaurants names and images
-    private void populate(final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
+    private void populate(final String[] rId, final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
         Log.d("IED", "4");
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
-        adapter = new VAdapter(this, getData(rName, rImage, rphoneNumber, raddress, rwebsite, rDescription));
+        adapter = new VAdapter(this, getData(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -145,11 +148,12 @@ public class NearMeActivity extends AppCompatActivity {
         initSearchBar(mSearchQuery);
     }
 
-    public static List<Restaurant> getData(String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription) {
+    public static List<Restaurant> getData(String[] rId, String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription) {
         mRestaurants = new ArrayList<>();
 
         for(int i = 0; i < rName.length; i++) {
             Restaurant current = new Restaurant();
+            current.setId(rId[i]);
             current.setName(rName[i]);
             current.setLogo(rImage[i]);
             current.setPhoneNumber(rphoneNumber[i]);

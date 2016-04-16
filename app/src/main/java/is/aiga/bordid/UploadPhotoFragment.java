@@ -25,7 +25,8 @@ import java.util.HashMap;
 
 public class UploadPhotoFragment extends DialogFragment implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Upload.php";
+    public static final String UPLOAD_URL_OWNER = "http://bordid2.freeoda.com/Server/Upload.php";
+    public static final String UPLOAD_URL_CUSTOMER = "http://bordid2.freeoda.com/Server/UploadCustPhoto.php";
     public static final String UPLOAD_KEY = "image";
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -123,11 +124,21 @@ public class UploadPhotoFragment extends DialogFragment implements View.OnClickL
             protected String doInBackground(Bitmap... params) {
                 Bitmap bitmap = params[0];
                 String uploadImage = getStringImage(bitmap);
-                uploadImage = SaveSharedPreference.getUserId(getActivity()) + ":" + uploadImage;
-                HashMap<String,String> data = new HashMap<>();
+                String result = "";
 
-                data.put(UPLOAD_KEY, uploadImage);
-                String result = service.sendPostRequest(UPLOAD_URL,data); // Send the image to the database
+                if(SaveSharedPreference.getRestaurantName(getActivity()).length() == 0) {
+                    uploadImage = SaveSharedPreference.getUserId(getActivity()) + ":" + uploadImage;
+                    HashMap<String,String> data = new HashMap<>();
+                    data.put(UPLOAD_KEY, uploadImage);
+                    result = service.sendPostRequest(UPLOAD_URL_CUSTOMER,data); // Send the image to the database
+                }
+                else {
+                    uploadImage = SaveSharedPreference.getRestaurantId(getActivity()) + ":" + uploadImage;
+                    HashMap<String,String> data = new HashMap<>();
+                    data.put(UPLOAD_KEY, uploadImage);
+                    result = service.sendPostRequest(UPLOAD_URL_OWNER,data); // Send the image to the database
+                }
+
                 return result;
             }
         }

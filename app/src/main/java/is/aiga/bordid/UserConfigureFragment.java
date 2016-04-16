@@ -15,7 +15,8 @@ import java.util.HashMap;
 
 public class UserConfigureFragment extends DialogFragment {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/ConfigureUser.php";
+    public static final String UPLOAD_URL_OWNER = "http://bordid2.freeoda.com/Server/ConfigureUser.php";
+    public static final String UPLOAD_URL_CUSTOMER = "http://bordid2.freeoda.com/Server/EditCustomer.php";
     public static final String UPLOAD_KEY = "user";
     private ConfigureUser task;
 
@@ -92,18 +93,29 @@ public class UserConfigureFragment extends DialogFragment {
 
             String updateString = SaveSharedPreference.getUserId(getActivity()) + ":" + name + ":" + email + ":" + phoneNumber;
 
-            Log.d("IED", "updateString" +  updateString);
+            Log.d("IED", "updateString: " + updateString);
 
-            HashMap<String,String> data = new HashMap<>();
-            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
+            String result = "";
 
-            String result = service.sendPostRequest(UPLOAD_URL, data);
+            if(SaveSharedPreference.getRestaurantName(getActivity()).length() == 0) {
+                HashMap<String,String> data = new HashMap<>();
+                data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
+                result = service.sendPostRequest(UPLOAD_URL_CUSTOMER, data);
+                Log.d("IED", "1");
+            }
+            else {
+                HashMap<String,String> data = new HashMap<>();
+                data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
+                result = service.sendPostRequest(UPLOAD_URL_OWNER, data);
+                Log.d("IED", "2");
+            }
 
             return result;
         }
 
         @Override
         protected void onPostExecute(final String s) {
+            Log.d("IED", s);
             SaveSharedPreference.setName(rootView.getContext(), name);
             SaveSharedPreference.setEmail(rootView.getContext(), email);
             SaveSharedPreference.setPhoneNumber(rootView.getContext(), phoneNumber);

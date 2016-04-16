@@ -34,15 +34,15 @@
                 </ImageView>
 
                 <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cousine"
-                android:padding="5dp"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:background="@drawable/back"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cousine"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:background="@drawable/back"
                     android:layout_marginTop="4dp">
-            </TextView>
+                </TextView>
             </LinearLayout>
 
             <LinearLayout
