@@ -27,13 +27,14 @@
                     android:id="@+id/logo"
                     android:layout_width="115dp"
                     android:layout_height="100dp"
-                    android:paddingRight="10dp"
+                    android:paddingRight="1dp"
                     android:layout_marginEnd="0dp"
                     android:src="@drawable/coco"
                     android:adjustViewBounds="true">
                 </ImageView>
 
                 <TextView
+                    android:id="@+id/RestType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Cousine"
@@ -64,6 +65,7 @@
                     android:textStyle="bold">
                 </TextView>
                 <TextView
+                    android:id="@+id/RestAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Heimilisfang"
@@ -73,6 +75,7 @@
                     android:layout_marginTop="5dp">
                 </TextView>
                 <TextView
+                    android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Average price $ 160"
@@ -102,6 +105,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4.0"
@@ -122,12 +126,14 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/opening"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Open"
+                    android:textColor="@color/green"
                     android:paddingTop="5dp"
                     android:gravity="center"
-                    android:textSize="15sp" >
+                    android:textSize="20sp" >
                 </TextView>
 
             </LinearLayout>
