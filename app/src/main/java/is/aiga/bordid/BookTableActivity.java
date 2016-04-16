@@ -1,36 +1,31 @@
 package is.aiga.bordid;
 
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.FragmentManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import java.util.Calendar;
+import java.util.HashMap;
 
 public class BookTableActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Reservation.php";
-    public static final String UPLOAD_KEY = "booking";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/GetRestaurantOpenHours.php";
+    public static final String UPLOAD_KEY = "restaurant";
 
-    private Button pickDate, increment, decrement, buttonBook;
+//    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Reservation.php";
+//    public static final String UPLOAD_KEY = "booking";
+
+    private getOpenHours task;
+    private DatePicker datePicker;
     public static TextView date;
     public TextView numberOfSeats;
-
-    /** Private members of the class */
-    private TextView displayTime;
-    private Button pickTime;
-
-    private int pHour;
-    private int pMinute;
-    /** This integer will uniquely define the dialog to be used for displaying time picker.*/
-    static final int TIME_DIALOG_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,43 +35,73 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get the current time
-        final Calendar cal = Calendar.getInstance();
-        pHour = cal.get(Calendar.HOUR_OF_DAY);
-        pMinute = cal.get(Calendar.MINUTE);
-
         init();
-
-        // Display the current time in the TextView
-        updateDisplay();
     }
 
     public void init() {
-        numberOfSeats = (TextView) findViewById(R.id.numberOfSeats);
-        numberOfSeats.setOnClickListener(this);
-        increment = (Button) findViewById(R.id.increment);
-        increment.setOnClickListener(this);
-        decrement = (Button) findViewById(R.id.decrement);
-        decrement.setOnClickListener(this);
-        pickDate = (Button)findViewById(R.id.pick_date);
-        pickDate.setOnClickListener(this);
-        buttonBook = (Button) findViewById(R.id.button_book);
-        buttonBook.setOnClickListener(this);
-        date = (TextView)findViewById(R.id.date);
-        date.setText(Utils.dateToday());
-        displayTime = (TextView) findViewById(R.id.timeDisplay);
-        pickTime = (Button) findViewById(R.id.pickTime);
-        pickTime.setOnClickListener(this);
+
+        // Start task to fetch information about the user
+        task = new getOpenHours();
+        task.execute((Void) null);
+
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        datePicker.init(datePicker.getYear(), datePicker.getDayOfMonth(), datePicker.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Toast.makeText(BookTableActivity.this, "DateChanged", Toast.LENGTH_SHORT).show();
+
+                // Open hours for this date
+                OpenHours oh = new OpenHours();
+
+                String monLunchOpen = oh.getMonday_lunch_open();
+                String monLunchClose = oh.getMonday_lunch_close();
+
+                openingHoursButtons(monLunchOpen, monLunchClose);
+            }
+        });
+    }
+
+    public void openingHoursButtons(String o, String c) {
+
+        int open = Integer.parseInt(o);
+        int close = Integer.parseInt(c);
+
+        int length = ((close - open) * 2)/100 ;
+        int swing = 0;
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.timeButtonsView);
+        ll.removeAllViews();
+
+        for(int i = 0; i < length+1; i++) {
+
+            String openTime = Integer.toString(open);
+
+            Button myButton = new Button(BookTableActivity.this);
+            myButton.setText(openTime);
+            myButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fm = getFragmentManager();
+                    BookTableFragment dialogFragment = new BookTableFragment();
+                    dialogFragment.show(fm, "Sample Fragment");
+                }
+            });
+            ll.addView(myButton);
+
+            if(swing == 0) {
+                open += 30;
+                swing = 1;
+            }
+            else {
+                open += 70;
+                swing = 0;
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            // Start pick date fragment
-            case R.id.pick_date:
-                DialogFragment DatePicker = new DatePickerFragment();
-                DatePicker.show(getSupportFragmentManager(), "datePicker");
-            break;
             // decrement seat quantity
             case R.id.decrement:
                 int dTemp = Integer.parseInt((String) numberOfSeats.getText());
@@ -86,62 +111,36 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
             // increment seat quantity
             case R.id.increment:
                 int iTemp = Integer.parseInt((String) numberOfSeats.getText());
-                iTemp += 1;
+                if(iTemp < 10) iTemp += 1;
                 numberOfSeats.setText(Integer.toString(iTemp));
                 break;
-            // Confirm booking
-            case R.id.button_book:
-                Toast.makeText(BookTableActivity.this, "Table Booked", Toast.LENGTH_SHORT).show();
-                finish();
-                break;
-
-            case R.id.pickTime:
-                showDialog(TIME_DIALOG_ID);
-                break;
         }
     }
 
-    // Callback received when the user "picks" a time in the dialog
-    private TimePickerDialog.OnTimeSetListener mTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    pHour = hourOfDay;
-                    pMinute = minute;
-                    updateDisplay();
-                    displayToast();
-                }
-            };
+    // Get opening hours for restaurant
+    public class getOpenHours extends AsyncTask<Void, Void, String> {
 
-    // Updates the time in the TextView
-    private void updateDisplay() {
-        displayTime.setText(
-                new StringBuilder()
-                        .append(pad(pHour)).append(":")
-                        .append(pad(pMinute)));
-    }
+        @Override
+        protected String doInBackground(Void... params) {
 
-    // Displays a notification when the time is updated
-    private void displayToast() {
-        Toast.makeText(this, new StringBuilder().append("Time choosen is ").append(displayTime.getText()),   Toast.LENGTH_SHORT).show();
-    }
+            Service service = new Service(); // Service class is used to validate username and password
 
-    // Add padding to numbers less than ten
-    private static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
-    }
+            String updateString = InfoActivity.id;
 
-    // Create a new dialog for time picker
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case TIME_DIALOG_ID:
-                return new TimePickerDialog(this,
-                        mTimeSetListener, pHour, pMinute, false);
+            Log.d("IED", "updateString" +  updateString);
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
+
+            String result = service.sendPostRequest(UPLOAD_URL, data);
+
+            return result;
         }
-        return null;
+
+        @Override
+        protected void onPostExecute(final String s) {
+            Log.d("IED", s);
+        }
     }
 
     @Override

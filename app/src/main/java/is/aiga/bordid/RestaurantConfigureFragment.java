@@ -129,7 +129,7 @@ public class RestaurantConfigureFragment extends DialogFragment implements View.
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String updateString = SaveSharedPreference.getUserId(getActivity()) + ":" + cname + ":" + cemail + ":" + caddress + ":" + czip + ":" + ccity + ":" + cphoneNumber +
+            String updateString = SaveSharedPreference.getRestaurantId(getActivity()) + ":" + cname + ":" + cemail + ":" + caddress + ":" + czip + ":" + ccity + ":" + cphoneNumber +
                                     ":" + cnumSeats + ":" + curl + ":" + clatitude + ":" + clongitude;
 
             Log.d("IED", "updateString" +  updateString);

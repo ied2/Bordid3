@@ -39,9 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class OwnerLoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/ValidateCustomer.php";
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/ValidateUser.php";
     public static final String UPLOAD_KEY = "username";
     public boolean LOGIN_SUCCESSFUL;
 
@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private Button owner_login;
     private AutoCompleteTextView mUserNameView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_owner_login);
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,32 +82,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        owner_login = (Button) findViewById(R.id.login_as_owner);
-        owner_login.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, OwnerLoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-            }
-        });
-
-        // Create Account activity
-        Button createAccountButton = (Button) findViewById(R.id.login_create_account);
-        createAccountButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, CreateAccountActivity.class);
-                startActivity(i);
-                finish();
             }
         });
 
@@ -293,7 +271,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(OwnerLoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mUserNameView.setAdapter(adapter);
@@ -342,29 +320,49 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            Log.d("IED", data);
-
             // Creating a JSONObject from data, received from server
             try {
                 JSONObject nodeRoot  = new JSONObject(data);
                 if(nodeRoot.getString("Success").equals("TRUE")) {
-                    String s1 = nodeRoot.getString("CustId");
-                    String s2 = nodeRoot.getString("CustUsername");
-                    String s3 = nodeRoot.getString("CustName");
-                    String s4 = nodeRoot.getString("CustEmail");
-                    String s5 = nodeRoot.getString("CustPhoneNumber");
-                    String s6 = nodeRoot.getString("ProfileImageUrl");
+                    String s1 = nodeRoot.getString("OwnerId");
+                    String s2 = nodeRoot.getString("OwnerUsername");
+                    String s3 = nodeRoot.getString("OwnerName");
+                    String s4 = nodeRoot.getString("OwnerEmail");
+                    String s5 = nodeRoot.getString("OwnerPhoneNumber");
+                    String s6 = nodeRoot.getString("RestId");
+                    String s7 = nodeRoot.getString("RestName");
+                    String s8 = nodeRoot.getString("RestAddress");
+                    String s9 = nodeRoot.getString("RestZip");
+                    String s10 = nodeRoot.getString("RestCity");
+                    String s11 = nodeRoot.getString("RestLatitude");
+                    String s12 = nodeRoot.getString("RestLongitude");
+                    String s13 = nodeRoot.getString("RestPhoneNumber");
+                    String s14 = nodeRoot.getString("RestUrl");
+                    String s15 = nodeRoot.getString("RestNumSeats");
+                    String s16 = nodeRoot.getString("RestEmail");
+                    String s17 = nodeRoot.getString("ProfileImageUrl");
 
                     // Save login information
-                    SaveSharedPreference.setUserId(LoginActivity.this, s1);
-                    SaveSharedPreference.setUserName(LoginActivity.this, s2);
-                    SaveSharedPreference.setName(LoginActivity.this, s3);
-                    SaveSharedPreference.setEmail(LoginActivity.this, s4);
-                    SaveSharedPreference.setPhoneNumber(LoginActivity.this, s5);
-                    SaveSharedPreference.setProfileImage(LoginActivity.this, s6);
+                    SaveSharedPreference.setUserId(OwnerLoginActivity.this, s1);
+                    SaveSharedPreference.setUserName(OwnerLoginActivity.this, s2);
+                    SaveSharedPreference.setName(OwnerLoginActivity.this, s3);
+                    SaveSharedPreference.setEmail(OwnerLoginActivity.this, s4);
+                    SaveSharedPreference.setPhoneNumber(OwnerLoginActivity.this, s5);
+                    SaveSharedPreference.setRestaurantId(OwnerLoginActivity.this, s6);
+                    SaveSharedPreference.setRestaurantName(OwnerLoginActivity.this, s7);
+                    SaveSharedPreference.setAddress(OwnerLoginActivity.this, s8);
+                    SaveSharedPreference.setZip(OwnerLoginActivity.this, s9);
+                    SaveSharedPreference.setCity(OwnerLoginActivity.this, s10);
+                    SaveSharedPreference.setLatitude(OwnerLoginActivity.this, s11);
+                    SaveSharedPreference.setLongitude(OwnerLoginActivity.this, s12);
+                    SaveSharedPreference.setRestaurantPhoneNumber(OwnerLoginActivity.this, s13);
+                    SaveSharedPreference.setUrl(OwnerLoginActivity.this, s14);
+                    SaveSharedPreference.setNumSeats(OwnerLoginActivity.this, s15);
+                    SaveSharedPreference.setRestaurantEmail(OwnerLoginActivity.this, s16);
+                    SaveSharedPreference.setProfileImage(OwnerLoginActivity.this, s17);
 
                     // Start Profile Activity
-                    Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                    Intent i = new Intent(OwnerLoginActivity.this, ProfileActivity.class);
                     startActivity(i);
                     finish(); // Shut down current activity
 

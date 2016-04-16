@@ -80,6 +80,7 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
             Log.e("IED", "Clicked and Position is "+String.valueOf(position));
 
             Intent i = new Intent(context, InfoActivity.class);
+            i.putExtra("id", data.get(position).getId());
             i.putExtra("name", data.get(position).getName());
             i.putExtra("phoneNumber", data.get(position).getPhoneNumber());
             i.putExtra("url", data.get(position).getWebsite());

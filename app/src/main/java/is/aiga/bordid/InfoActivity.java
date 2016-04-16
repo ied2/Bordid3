@@ -20,6 +20,7 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     public static RatingBar rating;
     public Button buttonOrderTable;
     public ImageView image;
+    public static String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
             String logo = extras.getString("logo");
 
             // Filling TextViews with user information
+            id = (extras.getString("id"));
             name.setText(extras.getString("name"));
             address.setText(extras.getString("address"));
             phoneNumber.setText(extras.getString("phoneNumber"));

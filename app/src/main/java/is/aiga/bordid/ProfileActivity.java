@@ -39,6 +39,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         phoneNumber.setText(SaveSharedPreference.getPhoneNumber(this));
         restaurant_name.setText(SaveSharedPreference.getRestaurantName(this));
 
+        // Checking if user is not a owner we hide restaurant change view
+        if(SaveSharedPreference.getRestaurantName(this).length() == 0) {
+            View view = findViewById(R.id.restaurant_layout);
+            view.setVisibility(View.GONE);
+        }
+
         // Buttons initialized
         buttonLogout = (Button) findViewById(R.id.button_logout);
         buttonLogout.setOnClickListener(this);
@@ -48,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonRestaurantConfigure.setOnClickListener(this);
         profile_image = (ImageView) findViewById(R.id.profile_photo);
         if(!SaveSharedPreference.getProfileImage(this).equals("")) Picasso.with(this).load(SaveSharedPreference.getProfileImage(this)).into(profile_image);
+        Log.d("IED", "mynd: " +SaveSharedPreference.getProfileImage(this));
         profile_image.setOnClickListener(this);
     }
 
