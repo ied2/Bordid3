@@ -1,6 +1,7 @@
 package is.aiga.bordid;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,7 +16,7 @@ import com.squareup.picasso.Picasso;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static ImageView profile_image;
-    public Button buttonLogout, buttonConfigure, buttonRestaurantConfigure;
+    public Button buttonLogout, buttonConfigure, buttonRestaurantConfigure, buttonReservations;
     public static TextView name, email, phoneNumber, restaurant_name;
     public static int id;
 
@@ -50,6 +51,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonLogout.setOnClickListener(this);
         buttonConfigure = (Button) findViewById(R.id.profile_configure);
         buttonConfigure.setOnClickListener(this);
+        buttonReservations = (Button) findViewById(R.id.profile_reservations);
+        buttonReservations.setOnClickListener(this);
         buttonRestaurantConfigure = (Button) findViewById(R.id.profile_configure_restaurant);
         buttonRestaurantConfigure.setOnClickListener(this);
         profile_image = (ImageView) findViewById(R.id.profile_photo);
@@ -86,6 +89,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 FragmentManager fm3 = getFragmentManager();
                 UploadPhotoFragment dialogFragment3 = new UploadPhotoFragment();
                 dialogFragment3.show(fm3, "Sample Fragment");
+
+            // Start an activity to display reservations for user
+            case R.id.profile_reservations:
+                Intent i = new Intent(ProfileActivity.this, ReservationsActivity.class);
+                startActivity(i);
+                break;
 
             default:
                 break;

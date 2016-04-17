@@ -11,6 +11,15 @@ public class Restaurant {
     private int numTables;
     private String phoneNumber;
     private String website;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public boolean isOpen() {
         return open;
