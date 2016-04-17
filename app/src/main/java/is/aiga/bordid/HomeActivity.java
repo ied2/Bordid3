@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity
         if(restaurants.size() > 0) {
             int index = randomGenerator.nextInt(restaurants.size());
             Restaurant rest = restaurants.get(index);
-            Intent i2 = new Intent(HomeActivity.this, InfoActivity.class);
+            Intent i2 = new Intent(HomeActivity.this, RestaurantInfoActivity.class);
             i2.putExtra("name", rest.getName());
             i2.putExtra("logo", rest.getLogo());
             i2.putExtra("phoneNumber", rest.getPhoneNumber());

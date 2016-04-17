@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-public class InfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class RestaurantInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     public static TextView name, address, phoneNumber, distance, url, description;
@@ -25,7 +25,7 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_restaurant_info);
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,7 +83,7 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     private void orderTable() {
         // If user is not logged in, we start Login Activity
         if(SaveSharedPreference.getUserName(this).length() < 1){
-            Toast.makeText(InfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RestaurantInfoActivity.this, "Login Please", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
         }

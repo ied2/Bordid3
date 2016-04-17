@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,6 +27,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class NearMeActivity extends AppCompatActivity {
@@ -116,6 +118,15 @@ public class NearMeActivity extends AppCompatActivity {
         String[] raddress = new String[restaurants.length()];
         String[] rwebsite = new String[restaurants.length()];
         String[] rDescription = new String[restaurants.length()];
+        boolean[] open = new boolean[restaurants.length()];
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        int hour = calendar.get(Calendar.HOUR);
+        Log.d("IED", "DAY: " + day);
+        Log.d("IED", "HOUR: " + hour);
+
+        boolean s = false;
 
         for(int i=0; i<restaurants.length(); i++) {
             JSONObject item = (JSONObject) restaurants.get(i);
@@ -126,6 +137,24 @@ public class NearMeActivity extends AppCompatActivity {
             String a = item.getString("RestAddress");
             String w = item.getString("RestWebsite");
             String d = item.getString("RestDescription");
+
+            String oh = item.getString("OpeningHours");
+            JSONObject openHours = new JSONObject(oh);
+            Log.d("IED", openHours.getString("MonLunchOpen"));
+            if(day == 1) {
+                s = isOpen(openHours.getString("MonLunchOpen"), openHours.getString("MonLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("MonDinnerOpen"), openHours.getString("MonDinnerClose"));
+                Log.d("IED", " "+s);
+            }
+
+            if(day == 7) {
+                s = isOpen(openHours.getString("SatLunchOpen"), openHours.getString("SatLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("SatDinnerOpen"), openHours.getString("SatDinnerClose"));
+                Log.d("IED", " "+s);
+            }
+
             rId[i] = r;
             rName[i] = n;
             rImage[i] = im;
@@ -133,15 +162,31 @@ public class NearMeActivity extends AppCompatActivity {
             raddress[i] = a;
             rwebsite[i] = w;
             rDescription[i] = d;
+            open[i] = s;
         }
-        populate(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription);
+        populate(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription, open);
+    }
+
+    private boolean isOpen(String open, String close) {
+
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        hour = hour * 100;
+
+        int a = Integer.parseInt(open);
+        int b = Integer.parseInt(close);
+        Log.d("IED", "a"+a);
+        Log.d("IED", "b"+b);
+        Log.d("IED", "hour"+hour);
+
+        return a <= hour && b >= hour;
+
     }
 
     // Populate recycleView list with our restaurants names and images
-    private void populate(final String[] rId, final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription) {
-        Log.d("IED", "4");
+    private void populate(final String[] rId, final String[] rName, final String[] rImage, final String[] rphoneNumber, final String[] raddress, final String[] rwebsite, final String[] rDescription, final boolean[] open) {
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
-        adapter = new VAdapter(this, getData(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription));
+        adapter = new VAdapter(this, getData(rId, rName, rImage, rphoneNumber, raddress, rwebsite, rDescription, open));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -149,7 +194,7 @@ public class NearMeActivity extends AppCompatActivity {
         initSearchBar(mSearchQuery);
     }
 
-    public static List<Restaurant> getData(String[] rId, String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription) {
+    public static List<Restaurant> getData(String[] rId, String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription, boolean[] open) {
         mRestaurants = new ArrayList<>();
 
         for(int i = 0; i < rName.length; i++) {
@@ -161,6 +206,7 @@ public class NearMeActivity extends AppCompatActivity {
             current.setAddress(raddress[i]);
             current.setWebsite(rwebsite[i]);
             current.setDescription(rDescription[i]);
+            current.setOpen(open[i]);
             mRestaurants.add(current);
         }
 
@@ -184,7 +230,6 @@ public class NearMeActivity extends AppCompatActivity {
 
     private void initSearchBar(String queryText) {
         // Search edit text field setup.
-        Log.d("IED", "5");
         mSearchEt = (EditText) findViewById(R.id.etSearch);
         mSearchEt.addTextChangedListener(new SearchWatcher());
         mSearchEt.setText(queryText);

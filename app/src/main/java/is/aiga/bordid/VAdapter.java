@@ -2,6 +2,7 @@ package is.aiga.bordid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +52,11 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
 
         holder.name.setText(current.getName());
 
+        if(current.isOpen()) {
+            holder.open.setTextColor(Color.parseColor("#00DE0E"));
+            holder.open.setText("Open");
+        }
+
         if(current.getLogo().equals("999")) Picasso.with(this.context).load(R.drawable.upload_image).fit().into(holder.logo);
         else Picasso.with(this.context).load(current.getLogo()).fit().into(holder.logo);
     }
@@ -62,7 +68,7 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
 
     class MyViewHolder extends RecyclerView.ViewHolder  {
 
-        TextView name;
+        TextView name, open;
         ImageView logo;
 
         public MyViewHolder(View itemView) {
@@ -70,6 +76,7 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
 
             logo = (ImageView) itemView.findViewById(R.id.logo);
             name = (TextView) itemView.findViewById(R.id.label);
+            open = (TextView) itemView.findViewById(R.id.opening);
         }
     }
 
@@ -79,7 +86,7 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
             int position = NearMeActivity.recyclerView.getChildAdapterPosition(v);
             Log.e("IED", "Clicked and Position is "+String.valueOf(position));
 
-            Intent i = new Intent(context, InfoActivity.class);
+            Intent i = new Intent(context, RestaurantInfoActivity.class);
             i.putExtra("id", data.get(position).getId());
             i.putExtra("name", data.get(position).getName());
             i.putExtra("phoneNumber", data.get(position).getPhoneNumber());

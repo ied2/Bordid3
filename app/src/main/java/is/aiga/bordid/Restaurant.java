@@ -12,6 +12,17 @@ public class Restaurant {
     private String phoneNumber;
     private String website;
 
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    private boolean open;
+
+
     public String getId() {
         return id;
     }

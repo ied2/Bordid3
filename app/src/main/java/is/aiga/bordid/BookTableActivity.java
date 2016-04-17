@@ -125,7 +125,7 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
 
             Service service = new Service(); // Service class is used to validate username and password
 
-            String updateString = InfoActivity.id;
+            String updateString = RestaurantInfoActivity.id;
 
             Log.d("IED", "updateString" +  updateString);
 

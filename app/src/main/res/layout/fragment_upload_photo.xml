@@ -11,23 +11,29 @@
         android:layout_height="200dp"
         android:src="@drawable/upload_image"/>
 
-    <Button
-        android:id="@+id/profile_choose_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_below="@+id/profile_image"
-        android:text="Choose Photo"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp" />
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/profile_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_image"
-        android:layout_toEndOf="@+id/profile_choose_photo"
-        android:text="Save"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp" />
+        <Button
+            android:id="@+id/profile_choose_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Photo"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <Button
+            android:id="@+id/profile_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/profile_choose_photo"
+            android:text="Save"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp" />
+    </LinearLayout>
 
 </RelativeLayout>

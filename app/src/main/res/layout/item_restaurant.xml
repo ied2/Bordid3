@@ -129,8 +129,8 @@
                     android:id="@+id/opening"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Open"
-                    android:textColor="@color/green"
+                    android:text="Closed"
+                    android:textColor="#de1b1b"
                     android:paddingTop="5dp"
                     android:gravity="center"
                     android:textSize="20sp" >
