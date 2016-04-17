@@ -29,14 +29,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 public class NearMeActivity extends AppCompatActivity {
 
-    public static final String GET_IMAGE_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
+    public static final String GET_RESTAURANT_URL="http://bordid2.freeoda.com/Server/GetRestaurants.php";
     public static RecyclerView recyclerView;
     private VAdapter adapter;
     public static JSONArray restaurants = null; // Array of restaurants
-    private static List<Restaurant> mRestaurants;
+    public static List<Restaurant> mRestaurants;
     private static List<Restaurant> mFilteredRestaurants;
     private String mSearchQuery;
     private EditText mSearchEt;
@@ -101,7 +102,7 @@ public class NearMeActivity extends AppCompatActivity {
             }
         }
         GetURLs gu = new GetURLs();
-        gu.execute(GET_IMAGE_URL);
+        gu.execute(GET_RESTAURANT_URL);
     }
 
     // After receiving all data we extract information and put it in arrays
@@ -122,10 +123,6 @@ public class NearMeActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        int hour = calendar.get(Calendar.HOUR);
-        Log.d("IED", "DAY: " + day);
-        Log.d("IED", "HOUR: " + hour);
-
         boolean s = false;
 
         for(int i=0; i<restaurants.length(); i++) {
@@ -140,21 +137,41 @@ public class NearMeActivity extends AppCompatActivity {
 
             String oh = item.getString("OpeningHours");
             JSONObject openHours = new JSONObject(oh);
-            Log.d("IED", openHours.getString("MonLunchOpen"));
             if(day == 1) {
+                s = isOpen(openHours.getString("SunLunchOpen"), openHours.getString("SunLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("SunDinnerOpen"), openHours.getString("SunDinnerClose"));
+            }
+            if(day == 2) {
                 s = isOpen(openHours.getString("MonLunchOpen"), openHours.getString("MonLunchClose"));
                 if(!s)
                     s = isOpen(openHours.getString("MonDinnerOpen"), openHours.getString("MonDinnerClose"));
-                Log.d("IED", " "+s);
             }
-
+            if(day == 3) {
+                s = isOpen(openHours.getString("TueLunchOpen"), openHours.getString("TueLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("TueDinnerOpen"), openHours.getString("TueDinnerClose"));
+            }
+            if(day == 4) {
+                s = isOpen(openHours.getString("WedLunchOpen"), openHours.getString("WedLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("WedDinnerOpen"), openHours.getString("WedDinnerClose"));
+            }
+            if(day == 5) {
+                s = isOpen(openHours.getString("TueLunchOpen"), openHours.getString("TueLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("TueDinnerOpen"), openHours.getString("TueDinnerClose"));
+            }
+            if(day == 6) {
+                s = isOpen(openHours.getString("FriLunchOpen"), openHours.getString("FriLunchClose"));
+                if(!s)
+                    s = isOpen(openHours.getString("FriDinnerOpen"), openHours.getString("FriDinnerClose"));
+            }
             if(day == 7) {
                 s = isOpen(openHours.getString("SatLunchOpen"), openHours.getString("SatLunchClose"));
                 if(!s)
                     s = isOpen(openHours.getString("SatDinnerOpen"), openHours.getString("SatDinnerClose"));
-                Log.d("IED", " "+s);
             }
-
             rId[i] = r;
             rName[i] = n;
             rImage[i] = im;
@@ -175,9 +192,6 @@ public class NearMeActivity extends AppCompatActivity {
 
         int a = Integer.parseInt(open);
         int b = Integer.parseInt(close);
-        Log.d("IED", "a"+a);
-        Log.d("IED", "b"+b);
-        Log.d("IED", "hour"+hour);
 
         return a <= hour && b >= hour;
 
@@ -196,6 +210,7 @@ public class NearMeActivity extends AppCompatActivity {
 
     public static List<Restaurant> getData(String[] rId, String[] rName, String[] rImage, String[] rphoneNumber, String[] raddress, String[] rwebsite, String[] rDescription, boolean[] open) {
         mRestaurants = new ArrayList<>();
+        String[] price = {"2000", "2500", "3000", "3500", "4000"};
 
         for(int i = 0; i < rName.length; i++) {
             Restaurant current = new Restaurant();
@@ -207,6 +222,9 @@ public class NearMeActivity extends AppCompatActivity {
             current.setWebsite(rwebsite[i]);
             current.setDescription(rDescription[i]);
             current.setOpen(open[i]);
+            Random random = new Random();
+            int r = random.nextInt(4 - 0 + 1) + 0;
+            current.setPrice(price[r]);
             mRestaurants.add(current);
         }
 

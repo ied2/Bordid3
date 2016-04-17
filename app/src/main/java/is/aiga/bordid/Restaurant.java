@@ -11,6 +11,15 @@ public class Restaurant {
     private int numTables;
     private String phoneNumber;
     private String website;
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public boolean isOpen() {
         return open;
