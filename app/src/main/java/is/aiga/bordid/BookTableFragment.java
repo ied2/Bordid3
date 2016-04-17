@@ -87,7 +87,8 @@ public class BookTableFragment extends DialogFragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String date = year + "-0" + month +"-" + day + " " + time + ":00";
+                int m = month+1;
+                String date = year + "-0" + m +"-" + day + " " + time + ":00";
                 BookTable booktable = new BookTable(SaveSharedPreference.getUserId(getActivity()), RestaurantInfoActivity.id, numberOfSeats.getText().toString(), date);
                 booktable.execute((Void) null);
                 loading = ProgressDialog.show(getActivity(),"Loading...","Please Wait...",true,true);
@@ -99,12 +100,14 @@ public class BookTableFragment extends DialogFragment {
                             e.printStackTrace();
                         } finally {
                             loading.dismiss();
-//                            Toast.makeText(getActivity(), "Table Booked", Toast.LENGTH_LONG).show();
                         }
                     }
                 };
                 timerThread.start();
+                Intent i = new Intent(getActivity(), ReservationsActivity.class);
+                startActivity(i);
                 dismiss();
+
             }
         });
 

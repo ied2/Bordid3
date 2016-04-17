@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,15 +45,6 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
 
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        init();
-    }
-
-    public void init() {
-
-        // Start task to fetch information about the user
-//        task = new getOpenHours();
-//        task.execute((Void) null);
 
         downloadRestaurants();
     }
@@ -145,8 +135,9 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
                 openHours.setSaturday_dinner_close(item2.getString("SatDinnerClose"));
             }
         }
+        Calendar calendar = Calendar.getInstance();
         datePicker = (DatePicker) findViewById(R.id.datePicker);
-        datePicker.init(datePicker.getYear(), datePicker.getDayOfMonth(), datePicker.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
+        datePicker.init(datePicker.getYear(), calendar.MONTH+1, calendar.DAY_OF_MONTH+12, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
@@ -253,32 +244,6 @@ public class BookTableActivity extends AppCompatActivity implements View.OnClick
         GetURLs gu = new GetURLs();
         gu.execute(GET_RESTAURANT_URL);
     }
-
-    // Get opening hours for restaurant
-//    public class getOpenHours extends AsyncTask<Void, Void, String> {
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//
-//            Service service = new Service(); // Service class is used to validate username and password
-//
-//            String updateString = RestaurantInfoActivity.id;
-//
-//            Log.d("IED", "updateString or id: " +  updateString);
-//
-//            HashMap<String,String> data = new HashMap<>();
-//            data.put(UPLOAD_KEY, updateString); // UPLOAD_KEY = "username", keyword for server POST request
-//
-//            String result = service.sendPostRequest(UPLOAD_URL, data);
-//
-//            return result;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final String s) {
-//            Log.d("IED", s);
-//        }
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

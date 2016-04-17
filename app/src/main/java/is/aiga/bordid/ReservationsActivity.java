@@ -23,27 +23,20 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Arnthor on 17.4.2016.
- */
 public class ReservationsActivity extends AppCompatActivity {
 
     public static final String GET_RESERVATION_URL="http://bordid2.freeoda.com/Server/GetUserReservations.php";
     public static final String UPLOAD_KEY = "username";
     public static RecyclerView recyclerView;
-    //private ReservationAdapter adapter;
+    private RAdapter adapter;
     private static JSONArray reservations = null; // Array of restaurants
     private static List<Reservation> mReservations;
-    private static String mCustId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.listview_restaurant);
-        setContentView(R.layout.app_bar_nearme);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.nearme_toolbar);
+        setContentView(R.layout.listview_reservations);
 
-        setSupportActionBar(toolbar);
         // Back arrow enabled
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -78,9 +71,8 @@ public class ReservationsActivity extends AppCompatActivity {
                 try {
                     Service service = new Service();
 
-                    String custId = mCustId;
                     HashMap<String,String> data = new HashMap<>();
-                    data.put(UPLOAD_KEY, custId); // UPLOAD_KEY = "username", keyword for server POST request
+                    data.put(UPLOAD_KEY, SaveSharedPreference.getUserId(ReservationsActivity.this)); // UPLOAD_KEY = "username", keyword for server POST request
 
                     String result = service.sendPostRequest(GET_RESERVATION_URL, data); // Posts a String to server, String created by HashMap
 
@@ -91,6 +83,8 @@ public class ReservationsActivity extends AppCompatActivity {
                 }
             }
         }
+        GetURLs gu = new GetURLs();
+        gu.execute();
     }
 
     // After receiving all data we extract information and put it in arrays
@@ -98,7 +92,6 @@ public class ReservationsActivity extends AppCompatActivity {
 
         reservations = (JSONArray)(new JSONTokener(jsonString).nextValue());
 
-        Log.d("IED", jsonString);
         String[] reservationId = new String[reservations.length()];
         String[] custId = new String[reservations.length()];
         String[] restaurantId = new String[reservations.length()];
@@ -117,16 +110,18 @@ public class ReservationsActivity extends AppCompatActivity {
             String r = item.getString("ReservationId");
             String n = item.getString("CustId");
             String im = item.getString("RestaurantId");
-            String p = item.getString("NumSeats");
+            String p = item.getString("ReservedSeats");
             String a = item.getString("ReservationDate");
-            String w = item.getString("RestName");
-            String c = item.getString("RestAddress");
-            String o = item.getString("RestZip");
-            String m = item.getString("RestCity");
-            String u = item.getString("RestPhoneNumber");
-            String q = item.getString("RestWebsite");
-            String j = item.getString("RestEmail");
 
+            String rest = item.getString("Restaurant");
+            JSONObject item2 = new JSONObject(rest);
+            String w = item2.getString("RestName");
+            String c = item2.getString("RestAddress");
+            String o = item2.getString("RestZip");
+            String m = item2.getString("RestCity");
+            String u = item2.getString("RestPhoneNumber");
+            String q = item2.getString("RestWebsite");
+            String j = item2.getString("RestEmail");
 
             reservationId[i] = r;
             custId[i] = n;
@@ -147,8 +142,8 @@ public class ReservationsActivity extends AppCompatActivity {
     // Populate recycleView list with our restaurants names and images
     private void populate(final String[] reservationId, final String[] custId, final String[] restaurantId, final String[] numSeats, final String[] reservationDate, final String[] restName, final String[] address, final String[] zip, final String[] city, final String[] phone, final String[] website, final String[] email) {
         recyclerView = (RecyclerView) this.findViewById(R.id.recycle_list);
-        //adapter = new ReservationAdapter(this, getData(reservationId, custId, restaurantId, numSeats, reservationDate, restName, address, zip, city, phone, website,email));
-        //recyclerView.setAdapter(adapter);
+        adapter = new RAdapter(this, getData(reservationId, custId, restaurantId, numSeats, reservationDate, restName, address, zip, city, phone, website,email));
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 

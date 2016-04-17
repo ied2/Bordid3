@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +42,7 @@ public class NearMeActivity extends AppCompatActivity {
     public static List<Restaurant> mRestaurants;
     private static List<Restaurant> mFilteredRestaurants;
     private String mSearchQuery;
-    private EditText mSearchEt;
+    private AutoCompleteTextView mSearchEt;
 
 
     @Override
@@ -248,7 +250,7 @@ public class NearMeActivity extends AppCompatActivity {
 
     private void initSearchBar(String queryText) {
         // Search edit text field setup.
-        mSearchEt = (EditText) findViewById(R.id.etSearch);
+        mSearchEt = (AutoCompleteTextView) findViewById(R.id.etSearch);
         mSearchEt.addTextChangedListener(new SearchWatcher());
         mSearchEt.setText(queryText);
 
@@ -292,13 +294,13 @@ public class NearMeActivity extends AppCompatActivity {
         List<Restaurant> restaurantsFiltered = new ArrayList<Restaurant>();
 
         // Go through initial releases and perform search.
-        for (Restaurant movie : mRestaurants) {
+        for (Restaurant restaurant : mRestaurants) {
 
             // Content to search through (in lower case).
             String content = (
-                    movie.getName() + " " +
-                            movie.getAddress() + " " +
-                            String.valueOf(movie.getDescription())
+                    restaurant.getName() + " " +
+                            restaurant.getAddress() + " " +
+                            String.valueOf(restaurant.getDescription())
             ).toLowerCase();
 
             for (String word : queryByWords) {
@@ -316,7 +318,7 @@ public class NearMeActivity extends AppCompatActivity {
 
                 // They all match.
                 if (numberOfMatches == 0) {
-                    restaurantsFiltered.add(movie);
+                    restaurantsFiltered.add(restaurant);
                 }
             }
         }

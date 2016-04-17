@@ -4,7 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+
+    <AutoCompleteTextView
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +22,8 @@
         android:imeOptions="actionDone"
         android:singleLine="true"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"/>
+        android:layout_marginRight="50dp"
+        android:nextFocusUp="@id/etSearch"
+        android:nextFocusLeft="@id/etSearch"/>
 
 </LinearLayout>

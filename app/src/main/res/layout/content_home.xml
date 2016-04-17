@@ -52,20 +52,6 @@
             android:textSize="30dp"
             android:textColor="@color/White"
             android:textStyle="bold"
-            android:text="Most Popular"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/restaurants2"
-            style="@style/TextStyle"/>
-
-            <View
-                style="@style/ViewStyle"/>
-
-        <TextView
-            android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="@color/White"
-            android:textStyle="bold"
             android:text="Something"
             android:layout_width="match_parent"
             android:layout_height="200dp"
