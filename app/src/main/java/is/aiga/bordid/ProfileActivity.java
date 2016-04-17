@@ -57,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonRestaurantConfigure.setOnClickListener(this);
         profile_image = (ImageView) findViewById(R.id.profile_photo);
         if(!SaveSharedPreference.getProfileImage(this).equals("")) Picasso.with(this).load(SaveSharedPreference.getProfileImage(this)).into(profile_image);
+        Log.d("IED", SaveSharedPreference.getProfileImage(this));
         profile_image.setOnClickListener(this);
     }
 
@@ -88,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 FragmentManager fm3 = getFragmentManager();
                 UploadPhotoFragment dialogFragment3 = new UploadPhotoFragment();
                 dialogFragment3.show(fm3, "Sample Fragment");
+                break;
 
             // Start an activity to display reservations for user
             case R.id.profile_reservations:
@@ -96,7 +98,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             default:
-                break;
         }
     }
 

@@ -116,7 +116,7 @@ public class UploadPhotoFragment extends DialogFragment implements View.OnClickL
                 Log.d("IED", s);
                 Toast.makeText(getActivity().getApplicationContext(), "Account Updated", Toast.LENGTH_LONG).show();
                 ProfileActivity.profile_image.setImageBitmap(bitmap);
-                SaveSharedPreference.setProfileImage(getActivity(), s);
+                SaveSharedPreference.setProfileImage(getActivity(), s.substring(0,s.length()-6));
                 dismiss();
             }
 
