@@ -11,14 +11,14 @@ public class Restaurant {
     private int numTables;
     private String phoneNumber;
     private String website;
-    private String email;
+    private String price;
 
-    public String getEmail() {
-        return email;
+    public String getPrice() {
+        return price;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public boolean isOpen() {

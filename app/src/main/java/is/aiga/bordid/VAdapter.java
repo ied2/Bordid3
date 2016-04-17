@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 // This class creates every single item in our recycleView list
 public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
@@ -52,11 +53,20 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
 
         holder.name.setText(current.getName());
 
+        holder.address.setText(current.getAddress());
+
+        holder.price.setText("Average Price " + current.getPrice() + " kr");
+
+        // Check if the restaurant is open or closed
         if(current.isOpen()) {
-            holder.open.setTextColor(Color.parseColor("#00DE0E"));
+            holder.open.setTextColor(Color.parseColor("#00DE0E")); // Green
             holder.open.setText("Open");
+        }else {
+            holder.open.setTextColor(Color.parseColor("#D32F2F")); // Red
+            holder.open.setText("Closed");
         }
 
+        // Display image of restaurant
         if(current.getLogo().equals("999")) Picasso.with(this.context).load(R.drawable.upload_image).fit().into(holder.logo);
         else Picasso.with(this.context).load(current.getLogo()).fit().into(holder.logo);
     }
@@ -68,7 +78,7 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
 
     class MyViewHolder extends RecyclerView.ViewHolder  {
 
-        TextView name, open;
+        TextView name, open, address, price;
         ImageView logo;
 
         public MyViewHolder(View itemView) {
@@ -77,6 +87,8 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
             logo = (ImageView) itemView.findViewById(R.id.logo);
             name = (TextView) itemView.findViewById(R.id.label);
             open = (TextView) itemView.findViewById(R.id.opening);
+            address = (TextView) itemView.findViewById(R.id.RestAddress);
+            price = (TextView) itemView.findViewById(R.id.price);
         }
     }
 
@@ -84,7 +96,6 @@ public class VAdapter extends RecyclerView.Adapter<VAdapter.MyViewHolder> {
         @Override
         public void onClick(View v) {
             int position = NearMeActivity.recyclerView.getChildAdapterPosition(v);
-            Log.e("IED", "Clicked and Position is "+String.valueOf(position));
 
             Intent i = new Intent(context, RestaurantInfoActivity.class);
             i.putExtra("id", data.get(position).getId());

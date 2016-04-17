@@ -1,6 +1,8 @@
 package is.aiga.bordid;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,14 +14,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 public class BookTableFragment extends DialogFragment {
 
-    private TextView numberOfSeats;
-    private static EditText name, email, phoneNumber;
+    public static final String UPLOAD_URL = "http://bordid2.freeoda.com/Server/Reservation.php";
+    public static final String UPLOAD_KEY = "booking";
+
+    private ProgressDialog loading;
+    private TextView numberOfSeats, date, timeOfDay;
     private Button confirm, cancel, increment, decrement;
     private View rootView;
+    private String time, day, year;
+    private int month;
+    private String[] months = {"Janúar", "Febrúar", "Mars", "Apríl", "Maí", "Júní", "Júlí", "Ágúst", "September", "Október", "Nóvember", "Desember"};
+
+
+
+    public BookTableFragment(String time, int day, int month, int year) {
+        this.time = time;
+        this.day = String.valueOf(day);
+        this.month = month;
+        this.year = String.valueOf(year);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +54,12 @@ public class BookTableFragment extends DialogFragment {
     }
 
     private void init() {
+
+        date = (TextView)rootView.findViewById(R.id.date);
+        date.setText(day + ". " + months[month] + " " + year);
+        timeOfDay = (TextView)rootView.findViewById(R.id.timeOfDay);
+        timeOfDay.setText(time);
+
 
         numberOfSeats = (TextView) rootView.findViewById(R.id.numberOfSeats);
 
@@ -60,9 +87,24 @@ public class BookTableFragment extends DialogFragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getActivity(), "Table Booked", Toast.LENGTH_LONG).show();
-                dismiss(); // Close dialog
+                String date = year + "-0" + month +"-" + day + " " + time + ":00";
+                BookTable booktable = new BookTable(SaveSharedPreference.getUserId(getActivity()), RestaurantInfoActivity.id, numberOfSeats.getText().toString(), date);
+                booktable.execute((Void) null);
+                loading = ProgressDialog.show(getActivity(),"Loading...","Please Wait...",true,true);
+                Thread timerThread = new Thread() {
+                    public void run() {
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            loading.dismiss();
+//                            Toast.makeText(getActivity(), "Table Booked", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+                timerThread.start();
+                dismiss();
             }
         });
 
@@ -74,4 +116,42 @@ public class BookTableFragment extends DialogFragment {
             }
         });
     }
+
+    // Asynchronous login task
+    public class BookTable extends AsyncTask<Void, Void, String> {
+
+        private final String custId;
+        private final String restId;
+        private final String numberOfSeats;
+        private final String resDate;
+
+
+        BookTable(String custId, String restId, String numberOfSeats, String resDate) {
+
+            this.custId = custId;
+            this.restId = restId;
+            this.numberOfSeats = numberOfSeats;
+            this.resDate = resDate;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            Service service = new Service(); // Service class is used to validate username and password
+
+            String str = custId +":"+ restId +":"+ numberOfSeats +":"+ resDate;
+            HashMap<String,String> data = new HashMap<>();
+            data.put(UPLOAD_KEY, str);
+            Log.d("IED", "Send String: " + str);
+
+            String result = service.sendPostRequest(UPLOAD_URL, data); // Posts a String to server, String created by HashMap, eg. username=john:123456
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(final String data) {
+            Log.d("IED", "result: " + data);
+            }
+        }
 }

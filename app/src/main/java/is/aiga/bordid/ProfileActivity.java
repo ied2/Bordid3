@@ -57,7 +57,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonRestaurantConfigure.setOnClickListener(this);
         profile_image = (ImageView) findViewById(R.id.profile_photo);
         if(!SaveSharedPreference.getProfileImage(this).equals("")) Picasso.with(this).load(SaveSharedPreference.getProfileImage(this)).into(profile_image);
-        Log.d("IED", "mynd: " +SaveSharedPreference.getProfileImage(this));
         profile_image.setOnClickListener(this);
     }
 
