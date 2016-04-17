@@ -39,7 +39,7 @@ public class RestaurantInfoActivity extends AppCompatActivity implements View.On
         image = (ImageView) findViewById(R.id.RestImage);
 
         // RatingView
-        rating = (RatingBar) findViewById(R.id.ratingBar);
+        //rating = (RatingBar) findViewById(R.id.ratingBar);
 
         // Buttons initialized
         buttonOrderTable = (Button) findViewById(R.id.order_table);
