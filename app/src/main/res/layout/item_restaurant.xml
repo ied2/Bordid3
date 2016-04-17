@@ -5,12 +5,14 @@
     android:layout_width="wrap_content"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="@color/White">
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="140dp">
+        android:layout_height="140dp"
+        android:background="@color/White">
 
         <LinearLayout
             android:orientation="horizontal"
